@@ -1,0 +1,4288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leading Business Ventures (LBV) - Luis Miguel Barros's Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- DataTables + jQuery (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css"
+  />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+      color: #2c3e50;
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, #1f3b5d 0%, #2c5282 100%);
+      color: #fff;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    header nav {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+    header nav a {
+      color: #d3e3ff;
+      text-decoration: none;
+      margin-right: 1.5rem;
+      transition: color 0.2s;
+      padding: 0.25rem 0;
+    }
+    header nav a:hover {
+      color: #fff;
+      border-bottom: 2px solid #fff;
+    }
+    main {
+      padding: 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+      background-color: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.08);
+      border-radius: 8px;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      overflow-x: hidden;
+    }
+    .table-wrapper {
+      position: relative;
+      overflow-x: auto;
+      overflow-y: visible;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #1f3b5d #f0f0f0;
+    }
+    .table-wrapper::-webkit-scrollbar {
+      height: 12px;
+    }
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 6px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #1f3b5d;
+      border-radius: 6px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #2c5282;
+    }
+    .table-scroll-indicator {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(to left, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 10;
+    }
+    .table-wrapper.scrollable-right .table-scroll-indicator {
+      opacity: 1;
+    }
+    .table-scroll-indicator-left {
+      left: 0;
+      right: auto;
+      background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+    }
+    .table-wrapper.scrollable-left .table-scroll-indicator-left {
+      opacity: 1;
+    }
+    h2 {
+      margin-top: 0;
+      color: #1f3b5d;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .controls-section {
+      background: #f8f9fa;
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      border: 1px solid #e9ecef;
+    }
+    .instructions-toggle {
+      background: #1f3b5d;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      margin-bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .instructions-toggle:hover {
+      background: #2c5282;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .instructions-toggle::after {
+      content: "▼";
+      font-size: 0.7rem;
+      transition: transform 0.2s;
+      margin-left: 0.5rem;
+    }
+    .instructions-toggle.collapsed::after {
+      transform: rotate(-90deg);
+    }
+    .instructions {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 6px;
+      border-left: 4px solid #1f3b5d;
+      display: none;
+    }
+    .instructions.show {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .instructions p {
+      margin: 0.85rem 0;
+      color: #495057;
+    }
+    .instructions p:first-child {
+      margin-top: 0;
+    }
+    .instructions p:last-child {
+      margin-bottom: 0;
+    }
+    .instructions strong {
+      color: #1f3b5d;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 140px;
+    }
+    .instructions .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+    .instructions .feature-list li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      color: #495057;
+    }
+    .instructions .feature-list li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #1f3b5d;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      padding-top: 1rem;
+      border-top: 1px solid #dee2e6;
+    }
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #1f3b5d;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(31, 59, 93, 0.2);
+    }
+    .btn-primary:hover {
+      background: #2c5282;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(31, 59, 93, 0.3);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(31, 59, 93, 0.2);
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
+    }
+    .btn-secondary:hover {
+      background: #5a6268;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    }
+    .btn-secondary:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(108, 117, 125, 0.2);
+    }
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      margin-top: 0;
+    }
+    #columnToggles {
+      margin: 0;
+      font-size: 0.9rem;
+      padding: 1.25rem;
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #e9ecef;
+    }
+    #columnToggles .label {
+      font-weight: 600;
+      margin-right: 0.5rem;
+      color: #495057;
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    #columnToggles .column-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    #columnToggles span {
+      display: inline-block;
+      margin: 0;
+      padding: 0.55rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      user-select: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      position: relative;
+    }
+    #columnToggles span:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    #columnToggles span:active {
+      transform: translateY(0);
+    }
+    #columnToggles span.visible-col {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border-color: #4caf50;
+    }
+    #columnToggles span.visible-col:hover {
+      background-color: #c8e6c9;
+      border-color: #388e3c;
+    }
+    #columnToggles span.visible-col:before {
+      content: "✓ ";
+      font-weight: bold;
+    }
+    #columnToggles span.hidden-col {
+      background-color: #ffebee;
+      color: #c62828;
+      border-color: #ef5350;
+      opacity: 0.7;
+    }
+    #columnToggles span.hidden-col:hover {
+      background-color: #ffcdd2;
+      opacity: 1;
+      border-color: #e53935;
+    }
+    #columnToggles span.hidden-col:before {
+      content: "✕ ";
+      font-weight: bold;
+    }
+    table.dataTable {
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    table.dataTable thead th {
+      white-space: nowrap;
+      background: #f8f9fa;
+      color: #495057;
+      font-weight: 600;
+      padding: 1rem 0.75rem;
+      border-bottom: 2px solid #dee2e6;
+      position: relative;
+    }
+    table.dataTable thead th.sorting,
+    table.dataTable thead th.sorting_asc,
+    table.dataTable thead th.sorting_desc {
+      cursor: pointer;
+      user-select: none;
+    }
+    table.dataTable thead th.sorting:hover {
+      background: #e9ecef;
+    }
+    table.dataTable thead th.sorting_asc {
+      background: #e3f2fd;
+      color: #1f3b5d;
+    }
+    table.dataTable thead th.sorting_desc {
+      background: #e3f2fd;
+      color: #1f3b5d;
+    }
+    table.dataTable thead input {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      transition: all 0.2s;
+      background-color: #fff;
+    }
+    table.dataTable thead input:focus {
+      outline: none;
+      border-color: #1f3b5d;
+      box-shadow: 0 0 0 3px rgba(31, 59, 93, 0.1);
+      background-color: #f8f9fa;
+    }
+    table.dataTable thead input::placeholder {
+      color: #adb5bd;
+      font-style: italic;
+    }
+    table.dataTable tbody tr {
+      transition: background-color 0.15s;
+    }
+    table.dataTable tbody tr:hover {
+      background-color: #f8f9fa !important;
+    }
+    table.dataTable tbody tr:nth-child(even) {
+      background-color: #fafbfc;
+    }
+    table.dataTable tbody td {
+      padding: 0.875rem 0.75rem;
+      border-bottom: 1px solid #e9ecef;
+      vertical-align: top;
+    }
+    table.dataTable tbody td:first-child {
+      font-weight: 600;
+      color: #6c757d;
+    }
+    a {
+      color: #1f3b5d;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #2c5282;
+      text-decoration: underline;
+    }
+    .dataTables_wrapper .dataTables_filter {
+      margin-bottom: 1rem;
+    }
+    .dataTables_wrapper .dataTables_filter {
+      float: right;
+      text-align: right;
+    }
+    .dataTables_wrapper .dataTables_filter label {
+      font-weight: 500;
+      color: #495057;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dataTables_wrapper .dataTables_filter input {
+      padding: 0.65rem 1rem;
+      border: 2px solid #ced4da;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      min-width: 250px;
+      background-color: #fff;
+    }
+    .dataTables_wrapper .dataTables_filter input:focus {
+      outline: none;
+      border-color: #1f3b5d;
+      box-shadow: 0 0 0 3px rgba(31, 59, 93, 0.1);
+      background-color: #f8f9fa;
+    }
+    .dataTables_wrapper .dataTables_filter input::placeholder {
+      color: #adb5bd;
+      font-style: italic;
+    }
+    .dataTables_wrapper .dataTables_length {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #495057;
+    }
+    .dataTables_wrapper .dataTables_length label {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dataTables_wrapper .dataTables_length select {
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      background-color: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dataTables_wrapper .dataTables_length select:focus {
+      outline: none;
+      border-color: #1f3b5d;
+      box-shadow: 0 0 0 3px rgba(31, 59, 93, 0.1);
+    }
+    .dataTables_wrapper .dataTables_info {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #6c757d;
+      padding: 0.5rem 0;
+    }
+    .dataTables_wrapper .dataTables_paginate {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      padding: 0.5rem 0.75rem;
+      margin: 0 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      background: #1f3b5d !important;
+      color: #fff !important;
+      border-color: #1f3b5d !important;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+      background: #1f3b5d !important;
+      color: #fff !important;
+      border-color: #1f3b5d !important;
+    }
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
+        margin: 1rem;
+      }
+      header {
+        padding: 1rem;
+      }
+      header h1 {
+        font-size: 1.25rem;
+      }
+      header nav {
+        font-size: 0.8rem;
+      }
+      header nav a {
+        margin-right: 0.75rem;
+      }
+      .controls-section {
+        padding: 1rem;
+      }
+      #columnToggles .column-buttons {
+        gap: 0.35rem;
+      }
+      #columnToggles span {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+      }
+      table.dataTable {
+        font-size: 0.85rem;
+      }
+      table.dataTable thead th,
+      table.dataTable tbody td {
+        padding: 0.6rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Leading Business Ventures (LBV) - Luis Miguel Barros's Portfolio</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Website Terms and Conditions</a>
+      <a href="#">Intellectual Property Assessment Clients (Searchable, Sortable Table)</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Intellectual Property Assessment Clients</h2>
+    
+    <div class="controls-section">
+      <button class="instructions-toggle collapsed" id="instructionsToggle" aria-expanded="false" aria-controls="instructions">
+        Show Instructions
+      </button>
+      <div class="instructions" id="instructions">
+        <ul class="feature-list">
+          <li><strong>Sorting:</strong> Click any column header to sort. Click again to reverse the sort order.</li>
+          <li><strong>Column Search:</strong> Use the search box above any column to filter that specific column.</li>
+          <li><strong>Global Search:</strong> Use the search box at the top right to search across all columns simultaneously.</li>
+          <li><strong>Combined Filters:</strong> Multiple column searches work together with AND logic—all conditions must match.</li>
+          <li><strong>Column Visibility:</strong> Use the toggle buttons below to show or hide columns. Green buttons indicate visible columns; red buttons indicate hidden columns.</li>
+          <li><strong>Export Data:</strong> Use the "Export to CSV" button to download the currently filtered and visible table data.</li>
+        </ul>
+        <p style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #e9ecef; font-size: 0.85rem; color: #6c757d; font-style: italic;">
+          All information in this table is publicly available from company websites, LinkedIn profiles, or public SBIR filings.
+        </p>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-primary" id="exportBtn" aria-label="Export filtered table data to CSV file">
+          Export to CSV
+        </button>
+        <button class="btn btn-secondary" id="resetFiltersBtn" aria-label="Clear all filters and show all columns">
+          Reset All Filters
+        </button>
+      </div>
+      
+      <div id="columnToggles">
+        <span class="label">Column Visibility Controls</span>
+        <div class="column-buttons">
+          <span class="visible-col" data-column="0">Index</span>
+          <span class="visible-col" data-column="1">Company Name</span>
+          <span class="visible-col" data-column="2">Website</span>
+          <span class="visible-col" data-column="3">LinkedIn</span>
+          <span class="visible-col" data-column="4">Affiliation</span>
+          <span class="visible-col" data-column="5">City</span>
+          <span class="visible-col" data-column="6">State</span>
+          <span class="visible-col" data-column="7">Region</span>
+          <span class="visible-col" data-column="8">Category</span>
+          <span class="visible-col" data-column="9">Technology</span>
+          <span class="visible-col" data-column="10">Funding Agency</span>
+          <span class="visible-col" data-column="11">Funding Amount</span>
+          <span class="visible-col" data-column="12">IP Consultant</span>
+          <span class="visible-col" data-column="13">Business Model</span>
+          <span class="visible-col" data-column="14">Market Assessment</span>
+          <span class="visible-col" data-column="15">Management Team</span>
+          <span class="visible-col" data-column="16">Reimbursement</span>
+          <span class="visible-col" data-column="17">Regulatory</span>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrapper" id="tableWrapper">
+      <div class="table-scroll-indicator"></div>
+      <div class="table-scroll-indicator table-scroll-indicator-left"></div>
+      <table id="lbv-table" class="display" style="width: 100%;">
+      <thead>
+        <!-- Header row -->
+        <tr class="header-row">
+          <th>Index</th>
+          <th>Company Name</th>
+          <th>Company Website</th>
+          <th>LinkedIn</th>
+          <th>Affiliation</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Region</th>
+          <th>Company Category</th>
+          <th>Technology Description</th>
+          <th>Funding Agency</th>
+          <th>Funding Amount</th>
+          <th>Consultant for IP and Competitive Assessment</th>
+          <th>Consultant for Business Model Profitability &amp; Funding</th>
+          <th>Consultant for Market Assessment and Marketing Strategy</th>
+          <th>Consultant for Management Team &amp; Strategic Partnerships</th>
+          <th>Consultant for Reimbursement</th>
+          <th>Consultant for Regulatory</th>
+        </tr>
+        <!-- Per-column search inputs -->
+        <tr class="filter-row">
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 0 -->
+        <tr>
+          <td>0</td>
+          <td>490 BioTech Inc.</td>
+          <td><a href="https://490biotech.com/" target="_blank" rel="noopener">https://490biotech.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/490-biotech/" target="_blank" rel="noopener">https://www.linkedin.com/company/490-biotech/</a></td>
+          <td>The University of Tennessee, Knoxville</td>
+          <td>Knoxville</td>
+          <td>Tennessee</td>
+          <td>Southeast</td>
+          <td>Diagnostics</td>
+          <td>Autonomous bioluminescent (light producing) solutions for continuously luminescent human cell models, assay kits, yeast-based environmental sensor kits, or custom solutions.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 1 -->
+        <tr>
+          <td>1</td>
+          <td>AAVogen, Inc.</td>
+          <td><a href="http://aavogen.com/" target="_blank" rel="noopener">http://aavogen.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/aavogen/" target="_blank" rel="noopener">https://www.linkedin.com/company/aavogen/</a></td>
+          <td>Washington State University</td>
+          <td>Rockville</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Gene therapeutics for muscle wasting diseases such as cancer cachexia, muscular dystrophy, sarcopenia, COPD, chronic kidney disease, and peripheral nerve damage.</td>
+          <td>NIH/NCI , NIH/NIAMS, NSF IOS 1147275</td>
+          <td>$2M, $225K,$662K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 2 -->
+        <tr>
+          <td>2</td>
+          <td>AP LifeSciences</td>
+          <td><a href="https://www.sbir.gov/node/1061645" target="_blank" rel="noopener">https://www.sbir.gov/node/1061645</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Gainsville</td>
+          <td>Florida</td>
+          <td>Southeast</td>
+          <td>Diagnostics</td>
+          <td>Urine and blood oxalate test kits.</td>
+          <td>NATIONAL INSTITUTE OF DIABETES AND DIGESTIVE AND KIDNEY DISEASES</td>
+          <td>$149,676</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 3 -->
+        <tr>
+          <td>3</td>
+          <td>Access Sensor Technologies LLC</td>
+          <td><a href="https://www.accsensors.com/" target="_blank" rel="noopener">https://www.accsensors.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/access-sensor-technologies/" target="_blank" rel="noopener">https://www.linkedin.com/company/access-sensor-technologies/</a></td>
+          <td>Colorado State University</td>
+          <td>Fort Collins</td>
+          <td>Colorado</td>
+          <td>Rocky-Mountains</td>
+          <td>Sensors</td>
+          <td>Environmental sensor and sampling products for pollutant exposure in air and water.</td>
+          <td>SBIR</td>
+          <td>$2.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 4 -->
+        <tr>
+          <td>4</td>
+          <td>Adaptelligence LLC</td>
+          <td><a href="https://www.adaptelligence.com/" target="_blank" rel="noopener">https://www.adaptelligence.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Pullman</td>
+          <td>Washington</td>
+          <td>Pacific-Costal</td>
+          <td>Wearables, Digital Health, Remote Monitoring</td>
+          <td>Integrate in-home, wearable and mobile devices leveraging advanced sensors, AI and machine learning for remote health monitoring.</td>
+          <td>NBIB</td>
+          <td>$350K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 5 -->
+        <tr>
+          <td>5</td>
+          <td>AivoCode, Inc.</td>
+          <td><a href="https://www.aivocode.com/" target="_blank" rel="noopener">https://www.aivocode.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/aivocode/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/aivocode/about/</a></td>
+          <td>Sanford Burnham Prebys Medical Discovery Institute</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics for the treatment and management of neurological diseases such as brain injury, Alzheimer's disease and other neurodegenerative disorders.</td>
+          <td>NIA</td>
+          <td>$433K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 6 -->
+        <tr>
+          <td>6</td>
+          <td>AlphaThera Inc.</td>
+          <td><a href="https://alphathera.com/" target="_blank" rel="noopener">https://alphathera.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/alphathera/" target="_blank" rel="noopener">https://www.linkedin.com/company/alphathera/</a></td>
+          <td>University of Pennsylvania</td>
+          <td>Philadelphia</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Diagnostics</td>
+          <td>Simple, fast and site-specific antibody conjugation for research and assays.</td>
+          <td>SBIR</td>
+          <td>$235K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 7 -->
+        <tr>
+          <td>7</td>
+          <td>Apricity Health LLC</td>
+          <td><a href="https://apricity-health.com/" target="_blank" rel="noopener">https://apricity-health.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/apricity-health/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/apricity-health/about/</a></td>
+          <td>NA</td>
+          <td>Austin</td>
+          <td>Texas</td>
+          <td>Southwest</td>
+          <td>Healthcare Services</td>
+          <td>Patient monitoring and care management services.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 8 -->
+        <tr>
+          <td>8</td>
+          <td>Aqualung Therapeutics Corporation</td>
+          <td><a href="https://www.aqualungtherapeutics.com/" target="_blank" rel="noopener">https://www.aqualungtherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/aqualung-therapeutics-corp./" target="_blank" rel="noopener">https://www.linkedin.com/company/aqualung-therapeutics-corp./</a></td>
+          <td>NA</td>
+          <td>Tucson</td>
+          <td>Arizona</td>
+          <td>Southwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics for severe lung inflammation resulting from acute lung injury, ventilator-induced lung injury (VILI), idiopathic pulmonary fibrosis, and pulmonary hypertension.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$259,613</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 9 -->
+        <tr>
+          <td>9</td>
+          <td>Arborsense, Inc.</td>
+          <td><a href="https://arborsenseinc.com/" target="_blank" rel="noopener">https://arborsenseinc.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/arborsense-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/arborsense-inc/</a></td>
+          <td>University of Michigan</td>
+          <td>Ann Arbor</td>
+          <td>Michigan</td>
+          <td>Midwest</td>
+          <td>Diagnostics</td>
+          <td>Transdermal sensor systems for non-invasive monitoring of health biomarkers.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 10 -->
+        <tr>
+          <td>10</td>
+          <td>Asymmetrex LLC</td>
+          <td><a href="https://asymmetrex.com/" target="_blank" rel="noopener">https://asymmetrex.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/asymmetrex-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/asymmetrex-llc/</a></td>
+          <td>NA</td>
+          <td>Boston</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Biotechnology</td>
+          <td>Stem cell biotechnology.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 11 -->
+        <tr>
+          <td>11</td>
+          <td>AusculTech Dx LLC</td>
+          <td><a href="https://www.atdx.ai/" target="_blank" rel="noopener">https://www.atdx.ai/</a></td>
+          <td><a href="https://www.linkedin.com/company/auscultech-dx/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/auscultech-dx/about/</a></td>
+          <td>Children's Research Institute</td>
+          <td>Dayton</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Digital Health</td>
+          <td>Smartphone stethoscope and cloud-based storage and real-time diagnostics.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$708,937</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 12 -->
+        <tr>
+          <td>12</td>
+          <td>Avoneaux Medical Institute LLC</td>
+          <td><a href="https://www.sbir.gov/sbc/avoneaux-medical-institute-llc" target="_blank" rel="noopener">https://www.sbir.gov/sbc/avoneaux-medical-institute-llc</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Easton</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Biotechnology</td>
+          <td>Micropurification technology biotechnology applications.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$148,360</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 13 -->
+        <tr>
+          <td>13</td>
+          <td>Ayuda Medica LLC</td>
+          <td><a href="http://www.ayudawear.com/" target="_blank" rel="noopener">http://www.ayudawear.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Seattle</td>
+          <td>Washington</td>
+          <td>Pacific-Costal</td>
+          <td>Wearables</td>
+          <td>Wearable medical devices.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 14 -->
+        <tr>
+          <td>14</td>
+          <td>BioAesthetics Corporation</td>
+          <td><a href="https://bio-aesthetics.com/" target="_blank" rel="noopener">https://bio-aesthetics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/bioaesthetics/" target="_blank" rel="noopener">https://www.linkedin.com/company/bioaesthetics/</a></td>
+          <td>Tulane University</td>
+          <td>Research Triangle Park</td>
+          <td>North Carolina</td>
+          <td>Southeast</td>
+          <td>Tissue Engineering</td>
+          <td>Tissue reconstruction and tissue graft technology for breast cancer patients after they undergo mastectomies.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$258,684</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 15 -->
+        <tr>
+          <td>15</td>
+          <td>Biomotum, Inc</td>
+          <td><a href="https://www.biomotum.com/" target="_blank" rel="noopener">https://www.biomotum.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/biomotum/" target="_blank" rel="noopener">https://www.linkedin.com/company/biomotum/</a></td>
+          <td>Northern Arizona University</td>
+          <td>Flagstaff</td>
+          <td>Arizona</td>
+          <td>Southwest</td>
+          <td>Wearables</td>
+          <td>Wearable robotics.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 16 -->
+        <tr>
+          <td>16</td>
+          <td>Biopico Systems Inc</td>
+          <td><a href="http://www.biopico.com/" target="_blank" rel="noopener">http://www.biopico.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Irvine</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>"Organ on a chip" platform for pharmaceutical applications and drug discovery that mimic true human physiology, so that responses to medicines, chemicals and diseases can be accurately predicted.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$617,592</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 17 -->
+        <tr>
+          <td>17</td>
+          <td>Birkeland Current Smart Health LLC</td>
+          <td><a href="https://www.birkelandcurrent.com/" target="_blank" rel="noopener">https://www.birkelandcurrent.com/</a></td>
+          <td>NA</td>
+          <td>Birkeland Current</td>
+          <td>Waco</td>
+          <td>Texas</td>
+          <td>Southwest</td>
+          <td>Remote Monitoring</td>
+          <td>Remote monitoring and wellness sensors.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$1,807,912</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 18 -->
+        <tr>
+          <td>18</td>
+          <td>Blue Iris Labs Inc.</td>
+          <td><a href="https://blueirislabs.com/" target="_blank" rel="noopener">https://blueirislabs.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/blue-iris-labs/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/blue-iris-labs/about/</a></td>
+          <td>Erik Page &amp; Associates, Inc.</td>
+          <td>Mill Valley</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Ambient Lighting</td>
+          <td>Precise measurement and control of spectral, biological, and circadian lighting systems in real places to improve health, and increase efficiency in environments.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 19 -->
+        <tr>
+          <td>19</td>
+          <td>Blue Marble Health Inc.</td>
+          <td><a href="https://www.bluemarblehealthco.com/" target="_blank" rel="noopener">https://www.bluemarblehealthco.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/blue-marble-game-co-/" target="_blank" rel="noopener">https://www.linkedin.com/company/blue-marble-game-co-/</a></td>
+          <td>NA</td>
+          <td>Altadena</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Digital Health</td>
+          <td>Telehealth platform for patient treatment, monitoring, and population analytics.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$978,861</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 20 -->
+        <tr>
+          <td>20</td>
+          <td>COG Analytics LLC</td>
+          <td><a href="https://www.coganalytics.com/" target="_blank" rel="noopener">https://www.coganalytics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/coganalytics/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/coganalytics/about/</a></td>
+          <td>NA</td>
+          <td>Potomac</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Digital Health</td>
+          <td>Development of research, clinical, and consumer-based products designed to improve public health and reduce health disparities.</td>
+          <td>NATIONAL INSTITUTE ON MINORITY HEALTH AND HEALTH DISPARITIES</td>
+          <td>$36,991</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 21 -->
+        <tr>
+          <td>21</td>
+          <td>CRM Medical Devices Inc.</td>
+          <td><a href="https://sites.google.com/view/crmmedicaldevices/" target="_blank" rel="noopener">https://sites.google.com/view/crmmedicaldevices/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Mountain View</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>Medical devices for neurogenic bladder management.</td>
+          <td>NATIONAL INSTITUTE OF DIABETES AND DIGESTIVE AND KIDNEY DISEASES</td>
+          <td>$768,123</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 22 -->
+        <tr>
+          <td>22</td>
+          <td>CadenzaMed Corporation</td>
+          <td><a href="https://www.cadenzamed.com/" target="_blank" rel="noopener">https://www.cadenzamed.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Berwyn</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals, Image Analysis</td>
+          <td>Advanced therapeutics and imaging-based diagnostics for precision medicine.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$97,494</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 23 -->
+        <tr>
+          <td>23</td>
+          <td>CareBand, Inc.</td>
+          <td><a href="https://www.carebandremembers.com/" target="_blank" rel="noopener">https://www.carebandremembers.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/careband/" target="_blank" rel="noopener">https://www.linkedin.com/company/careband/</a></td>
+          <td>NA</td>
+          <td>Chicago</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Remote Monitoring</td>
+          <td>Remote monitoring for dementia care.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$288,635</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 24 -->
+        <tr>
+          <td>24</td>
+          <td>Cartilage Inc.</td>
+          <td><a href="https://cartilage.tech/" target="_blank" rel="noopener">https://cartilage.tech/</a></td>
+          <td>NA</td>
+          <td>University of California Irvine</td>
+          <td>Irvine</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Tissue Engineering</td>
+          <td>Cartilage regeneration biotechnology.</td>
+          <td>NATIONAL INSTITUTE OF ARTHRITIS AND MUSCULOSKELETAL AND SKIN DISEASES</td>
+          <td>$330,965</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 25 -->
+        <tr>
+          <td>25</td>
+          <td>Casterbridge Pharmaceuticals Inc.</td>
+          <td><a href="https://casterbridge-pharma.com/" target="_blank" rel="noopener">https://casterbridge-pharma.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Boston</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Pharmaceuticals</td>
+          <td>Pharmaceuticals: small-molecule drugs directed at Hepatitis B Virus (HBV).</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 26 -->
+        <tr>
+          <td>26</td>
+          <td>Cell Molecular Tissue Engineering LLC</td>
+          <td><a href="https://www.sbir.gov/node/400544" target="_blank" rel="noopener">https://www.sbir.gov/node/400544</a></td>
+          <td>NA</td>
+          <td>University of Connecticut Health Center</td>
+          <td>Avon</td>
+          <td>Connecticut</td>
+          <td>New England</td>
+          <td>Medical Devices</td>
+          <td>Implantable medical devices.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$89,342</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 27 -->
+        <tr>
+          <td>27</td>
+          <td>CellSight Technologies Inc.</td>
+          <td><a href="http://www.cellsighttech.com/" target="_blank" rel="noopener">http://www.cellsighttech.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/cellsight-technologies-inc-/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/cellsight-technologies-inc-/about/</a></td>
+          <td>NA</td>
+          <td>San Francisco</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Image Analysis</td>
+          <td>Positron emission tomography (PET) imaging tools.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$300,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 28 -->
+        <tr>
+          <td>28</td>
+          <td>Cellular Logistics, Inc.</td>
+          <td><a href="https://cellogistics.com/" target="_blank" rel="noopener">https://cellogistics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/cellular-logistics-inc./" target="_blank" rel="noopener">https://www.linkedin.com/company/cellular-logistics-inc./</a></td>
+          <td>University of Wisconsin-Madison</td>
+          <td>Madison</td>
+          <td>Wisconsin</td>
+          <td>Midwest</td>
+          <td>Biotechnology</td>
+          <td>Myocardial reparative and regenerative therapies.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$471,627</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 29 -->
+        <tr>
+          <td>29</td>
+          <td>Clarix Imaging Corporation</td>
+          <td><a href="https://www.clariximaging.com/" target="_blank" rel="noopener">https://www.clariximaging.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/clariximaging/" target="_blank" rel="noopener">https://www.linkedin.com/company/clariximaging/</a></td>
+          <td>University of Chicago</td>
+          <td>Chicago</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Image Analysis</td>
+          <td>Intraoperative lumpectomy imaging technology.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 30 -->
+        <tr>
+          <td>30</td>
+          <td>Cogentis Therapeutics, Inc.</td>
+          <td><a href="http://www.cogentistherapeutics.com/" target="_blank" rel="noopener">http://www.cogentistherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/cogentis-therapeutics/" target="_blank" rel="noopener">https://www.linkedin.com/company/cogentis-therapeutics/</a></td>
+          <td>NA</td>
+          <td>Baltimore</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Biotechnology therapeutics for dementia.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 31 -->
+        <tr>
+          <td>31</td>
+          <td>Collinge and Associates, Inc.</td>
+          <td><a href="https://collinge.org/" target="_blank" rel="noopener">https://collinge.org/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Eugene</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Digital Health</td>
+          <td>Research and consulting organization dedicated to the advancement of individual and public health.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$399,085</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 32 -->
+        <tr>
+          <td>32</td>
+          <td>Consegna Pharma Inc.</td>
+          <td><a href="https://www.consegnapharma.com/" target="_blank" rel="noopener">https://www.consegnapharma.com/</a></td>
+          <td>NA</td>
+          <td>University of Pittsburgh</td>
+          <td>Pittsburgh</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Pharmaceutical company reformulating existing drugs</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 33 -->
+        <tr>
+          <td>33</td>
+          <td>Cornovus Pharmaceuticals, Inc.</td>
+          <td><a href="https://www.sbir.gov/node/821905" target="_blank" rel="noopener">https://www.sbir.gov/node/821905</a></td>
+          <td>NA</td>
+          <td>University of Connecticut</td>
+          <td>Farmington</td>
+          <td>Connecticut</td>
+          <td>New England</td>
+          <td>Pharmaceuticals</td>
+          <td>Pharmaceuticals for cardiac hypertrophy and heart failure.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$1,018,718</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 34 -->
+        <tr>
+          <td>34</td>
+          <td>CorticoMetrics LLC</td>
+          <td><a href="https://www.corticometrics.com/" target="_blank" rel="noopener">https://www.corticometrics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/corticometrics-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/corticometrics-llc/</a></td>
+          <td>Massachusetts General Hospital</td>
+          <td>Boston</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Image Analysis</td>
+          <td>Quantitative neuroimaging software to aid radiologists and neurologists in patient assessment of neurological disorders.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 35 -->
+        <tr>
+          <td>35</td>
+          <td>Creative Bio-Peptides, Inc.</td>
+          <td><a href="https://creativebiopeptides.com/" target="_blank" rel="noopener">https://creativebiopeptides.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/creative-bio-peptides/" target="_blank" rel="noopener">https://www.linkedin.com/company/creative-bio-peptides/</a></td>
+          <td>NA</td>
+          <td>Rockville</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Oral peptides for therapeutic use in neuopathic pain and synapse loss in neurodegeneration of aging, dementias, brain injury, and stroke.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 36 -->
+        <tr>
+          <td>36</td>
+          <td>CryoCrate LLC</td>
+          <td><a href="https://www.cryocrate.com/" target="_blank" rel="noopener">https://www.cryocrate.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/cryo-crate/" target="_blank" rel="noopener">https://www.linkedin.com/company/cryo-crate/</a></td>
+          <td>University of Missouri</td>
+          <td>Columbia</td>
+          <td>Missouri</td>
+          <td>Midwest</td>
+          <td>Medical Devices</td>
+          <td>Cryopreservation</td>
+          <td>NATIONAL INSTITUTE OF NEUROLOGICAL DISORDERS AND STROKE</td>
+          <td>$335,560</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 37 -->
+        <tr>
+          <td>37</td>
+          <td>Cyion Technologies, LLC</td>
+          <td><a href="https://www.sbir.gov/sbc/cyion-technologies-llc-0" target="_blank" rel="noopener">https://www.sbir.gov/sbc/cyion-technologies-llc-0</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Pleasanton</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Biomedical research and drug discovery for neurological and neuropsychiatric disorders.</td>
+          <td>NATIONAL INSTITUTE OF DIABETES AND DIGESTIVE AND KIDNEY DISEASES</td>
+          <td>$768,124</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 38 -->
+        <tr>
+          <td>38</td>
+          <td>Cytoimage Inc.</td>
+          <td><a href="https://cytoimage.bio/" target="_blank" rel="noopener">https://cytoimage.bio/</a></td>
+          <td>NA</td>
+          <td>Oregon Health and Science University</td>
+          <td>Portland</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Image Analysis</td>
+          <td>Imaging platform for evaluating drug combination efficacy and resistance in individual cancer patients.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 39 -->
+        <tr>
+          <td>39</td>
+          <td>DMK Pharmaceuticals Inc.</td>
+          <td><a href="https://dmkpharma.com/" target="_blank" rel="noopener">https://dmkpharma.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/dmk-pharma/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/dmk-pharma/about/</a></td>
+          <td>NA</td>
+          <td>Gladstone</td>
+          <td>New Jersey</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Pharmaceuticals for the treatment of opioid use disorder.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 40 -->
+        <tr>
+          <td>40</td>
+          <td>Dahila Biosciences Inc.</td>
+          <td><a href="https://dahliabio.com/" target="_blank" rel="noopener">https://dahliabio.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/dahliabio/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/dahliabio/about/</a></td>
+          <td>NA</td>
+          <td>San Francisco</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Diagnostics, Pharmaceuticals</td>
+          <td>R&amp;D company focused on utilizing RNA-targeting Cas9 (RCas9) technology for applications across biomedical research, diagnostics, and therapeutics.</td>
+          <td>NATIONAL INSTITUTE OF ALLERGY AND INFECTIOUS DISEASES</td>
+          <td>$299,978</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 41 -->
+        <tr>
+          <td>41</td>
+          <td>Datirium LLC</td>
+          <td><a href="https://datirium.com/" target="_blank" rel="noopener">https://datirium.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/datirium/" target="_blank" rel="noopener">https://www.linkedin.com/company/datirium/</a></td>
+          <td>Cincinnati Children's Hospital</td>
+          <td>Cincinnati</td>
+          <td>Ohio</td>
+          <td>Midwest</td>
+          <td>Digital Health</td>
+          <td>Next-generation sequencing (NGS) data analysis and experiment management platform.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 42 -->
+        <tr>
+          <td>42</td>
+          <td>Davinci Bio Inc.</td>
+          <td><a href="https://www.sbir.gov/node/1229327" target="_blank" rel="noopener">https://www.sbir.gov/node/1229327</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>San Francisco</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Diagnostics</td>
+          <td>Next-generation fluorescence in situ hybridization (FISH) platform for single cell omics analysis.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$300,003</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 43 -->
+        <tr>
+          <td>43</td>
+          <td>Daxor Corporation</td>
+          <td><a href="https://www.daxor.com/" target="_blank" rel="noopener">https://www.daxor.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/daxorcorporation/" target="_blank" rel="noopener">https://www.linkedin.com/company/daxorcorporation/</a></td>
+          <td>NA</td>
+          <td>Oak Ridge</td>
+          <td>Tennessee</td>
+          <td>Southeast</td>
+          <td>Medical Devices</td>
+          <td>Biotechnology and medical instrumentation for the measurement of intravascular blood volume.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$55,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 44 -->
+        <tr>
+          <td>44</td>
+          <td>Digidence LLC</td>
+          <td><a href="https://www.digidence.co/" target="_blank" rel="noopener">https://www.digidence.co/</a></td>
+          <td><a href="https://www.linkedin.com/company/digidence/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/digidence/about/</a></td>
+          <td>Care Progress, LLC D/B/A Digidence</td>
+          <td>Bethesda</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Digital Health</td>
+          <td>Digital technologies to generate real-world evidence (RWE) and insights directly from patients.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 45 -->
+        <tr>
+          <td>45</td>
+          <td>Dignify Therapeutics, LLC</td>
+          <td><a href="https://dignifytherapeutics.com/" target="_blank" rel="noopener">https://dignifytherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/dignify-therapeutics/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/dignify-therapeutics/about/</a></td>
+          <td>NA</td>
+          <td>Research Triangle Park</td>
+          <td>North Carolina</td>
+          <td>Southeast</td>
+          <td>Pharmaceuticals</td>
+          <td>Drug and device therapeutics for neurogenic bladder and bowel (B&amp;B) dysfunction.</td>
+          <td>NATIONAL INSTITUTE OF NEUROLOGICAL DISORDERS AND STROKE</td>
+          <td>$50,002</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 46 -->
+        <tr>
+          <td>46</td>
+          <td>Double Helix Optics Inc.</td>
+          <td><a href="https://www.doublehelixoptics.com/" target="_blank" rel="noopener">https://www.doublehelixoptics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/doublehelixoptics/" target="_blank" rel="noopener">https://www.linkedin.com/company/doublehelixoptics/</a></td>
+          <td>University of Colorado, Boulder</td>
+          <td>Boulder</td>
+          <td>Colorado</td>
+          <td>Rocky-Mountains</td>
+          <td>Image Analysis</td>
+          <td>3D nano-scale imaging, tracking and counting for scientific R&amp;D, high content analysis, spatial-omics, and diagnostic testing.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 47 -->
+        <tr>
+          <td>47</td>
+          <td>Dyad Medical Inc.</td>
+          <td><a href="https://dyadmed.com/" target="_blank" rel="noopener">https://dyadmed.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/dyad-medical/" target="_blank" rel="noopener">https://www.linkedin.com/company/dyad-medical/</a></td>
+          <td>NA</td>
+          <td>Boston</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Digital Health, Image Analysis</td>
+          <td>A cloud platform for multi-modality cardiac image analysis and interpretation using AI.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 48 -->
+        <tr>
+          <td>48</td>
+          <td>EMBIC Corporation (Previously: Medical Care Corporation)</td>
+          <td><a href="https://embic.us/" target="_blank" rel="noopener">https://embic.us/</a></td>
+          <td><a href="https://www.linkedin.com/company/embic-corporation/" target="_blank" rel="noopener">https://www.linkedin.com/company/embic-corporation/</a></td>
+          <td>NA</td>
+          <td>Newport Beach</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Diagnostics</td>
+          <td>Developer of digital cognitive biomarkers applicable to clinical care, diagnostics, and the field of Alzheimer's research, including the pre-symptomatic identification of Alzheimer's Disease.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$870,713</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 49 -->
+        <tr>
+          <td>49</td>
+          <td>EndObetes Inc.</td>
+          <td><a href="https://endobetes.com/" target="_blank" rel="noopener">https://endobetes.com/</a></td>
+          <td>NA</td>
+          <td>Columbia University</td>
+          <td>New York</td>
+          <td>New York</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices</td>
+          <td>Endoscopically placed devices to treat obesity and associated Type-2 diabetes.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 50 -->
+        <tr>
+          <td>50</td>
+          <td>Enspire Bio, Inc.</td>
+          <td><a href="https://enspirebio.com/" target="_blank" rel="noopener">https://enspirebio.com/</a></td>
+          <td>NA</td>
+          <td>University of California, Los Angeles</td>
+          <td>Santa Monica</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Drug discovery company focused on mitochondrial mechanisms and pathways, cellular energetics, and cellular metabolism.</td>
+          <td>NATIONAL INSTITUTE OF ENVIRONMENTAL HEALTH SCIENCES</td>
+          <td>$225,001</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 51 -->
+        <tr>
+          <td>51</td>
+          <td>Enzyme by Design Inc.</td>
+          <td><a href="https://www.enzymebydesign.com/" target="_blank" rel="noopener">https://www.enzymebydesign.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/enzyme-by-design/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/enzyme-by-design/about/</a></td>
+          <td>University of Illinois at Chicago</td>
+          <td>Chicago</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Biotech company developing cancer therapies that eliminate many of the toxic side effects commonly associated with chemotherapy.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$327,646</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 52 -->
+        <tr>
+          <td>52</td>
+          <td>EpiEndoAF Inc.</td>
+          <td><a href="https://www.sbir.gov/sbirsearch/detail/1240613" target="_blank" rel="noopener">https://www.sbir.gov/sbirsearch/detail/1240613</a></td>
+          <td>NA</td>
+          <td>Stanford University</td>
+          <td>Saratoga</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>Medical device development company that has developed a minimally invasive solution for Atrial fibrillation. treatment.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$296,728</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 53 -->
+        <tr>
+          <td>53</td>
+          <td>Evon Medics, LLC</td>
+          <td><a href="https://evonmedics.com/" target="_blank" rel="noopener">https://evonmedics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/evon-medics-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/evon-medics-llc/</a></td>
+          <td>NA</td>
+          <td>Ellicott City</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics for Alzheimer's Disease, Opioid Use Disorder and other neurodegenerative chronic diseases.</td>
+          <td>SBIR</td>
+          <td>$4.8M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 54 -->
+        <tr>
+          <td>54</td>
+          <td>Eysz Inc.</td>
+          <td><a href="https://eyszlab.com/" target="_blank" rel="noopener">https://eyszlab.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/eysz/" target="_blank" rel="noopener">https://www.linkedin.com/company/eysz/</a></td>
+          <td>University of California, San Francisco Benioff Children's Hospital Oakland</td>
+          <td>Piedmont</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Digital Health</td>
+          <td>Digital therapeutic development that analyzes passive eye movement data to identify seizures, track side effects, and responds to medications in real-time to empower personalized medicine in epilepsy.</td>
+          <td>NATIONAL INSTITUTE OF NEUROLOGICAL DISORDERS AND STROKE</td>
+          <td>$52,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 55 -->
+        <tr>
+          <td>55</td>
+          <td>FaceView Mask LLC</td>
+          <td><a href="https://faceviewmask.com/" target="_blank" rel="noopener">https://faceviewmask.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/faceview-mask-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/faceview-mask-llc/</a></td>
+          <td>NA</td>
+          <td>Medford</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Device</td>
+          <td>Developer and manufacturer of a patented transparent surgical N95 respirator mask.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 56 -->
+        <tr>
+          <td>56</td>
+          <td>Fannin Innovation Studio LLC</td>
+          <td><a href="https://fannininnovation.com/" target="_blank" rel="noopener">https://fannininnovation.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/fannininnovationstudio/" target="_blank" rel="noopener">https://www.linkedin.com/company/fannininnovationstudio/</a></td>
+          <td>Texas Medical Center</td>
+          <td>Houston</td>
+          <td>Texas</td>
+          <td>Southwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Development and commercialization of therapeutics and medical device technologies from the Texas Medical Center.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$5.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 57 -->
+        <tr>
+          <td>57</td>
+          <td>For-Robin, Inc.</td>
+          <td><a href="https://for-robin.com/" target="_blank" rel="noopener">https://for-robin.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/for-robin-therapeutics-llc/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/for-robin-therapeutics-llc/about/</a></td>
+          <td>Research Foundation for State University of New York at Buffalo</td>
+          <td>Buffalo</td>
+          <td>New York</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Antibody immunotherapies focused on the monoclonal antibody JAA-F11, and humanized variants of it, that target all breast cancer cell subtypes including triple negative breast cancer which currently has no targeted therapy.</td>
+          <td>NCI STTR, NCI</td>
+          <td>$7M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 58 -->
+        <tr>
+          <td>58</td>
+          <td>Framergy, Inc.</td>
+          <td><a href="https://www.framergy.com/" target="_blank" rel="noopener">https://www.framergy.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/framergy-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/framergy-inc/</a></td>
+          <td>Texas A&amp;M University</td>
+          <td>College Station</td>
+          <td>Texas</td>
+          <td>Southwest</td>
+          <td>Nanomaterials</td>
+          <td>Porous nanomaterial, Metal Organic Frameworks (MOF) for applications in oil &amp; gas.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 59 -->
+        <tr>
+          <td>59</td>
+          <td>Grannus Therapeutics Inc.</td>
+          <td><a href="https://www.sbir.gov/sbirsearch/detail/1677331" target="_blank" rel="noopener">https://www.sbir.gov/sbirsearch/detail/1677331</a></td>
+          <td><a href="https://www.linkedin.com/company/grannus-therapeutics/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/grannus-therapeutics/about/</a></td>
+          <td>University of Notre Dame</td>
+          <td>Indianapolis</td>
+          <td>Indiana</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics consisting of of small molecule inhibitors for specific isoforms of HSP90 for the treatment of multiple types of cancer.</td>
+          <td>NATIONAL CENTER ON BIRTH DEFECTS AND DEVELOPMENTAL DISABILITIES</td>
+          <td>$80,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 60 -->
+        <tr>
+          <td>60</td>
+          <td>Greenwings Biomedical Inc.</td>
+          <td><a href="https://greenwingsbiomedical.com/" target="_blank" rel="noopener">https://greenwingsbiomedical.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/greenwings-biomedical/" target="_blank" rel="noopener">https://www.linkedin.com/company/greenwings-biomedical/</a></td>
+          <td>NA</td>
+          <td>Los Angeles</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Software, Digital Health, Medical Devices</td>
+          <td>Clinical decision support systems, biomedical devices and digital-health products enabled at their core by highly innovative algorithms and software-based intelligence.</td>
+          <td>NATIONAL CENTER ON BIRTH DEFECTS AND DEVELOPMENTAL DISABILITIES</td>
+          <td>$80,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 61 -->
+        <tr>
+          <td>61</td>
+          <td>Healthy Design Ltd. Co.</td>
+          <td><a href="https://www.exersides.com/" target="_blank" rel="noopener">https://www.exersides.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/exersidesicu/" target="_blank" rel="noopener">https://www.linkedin.com/company/exersidesicu/</a></td>
+          <td>NA</td>
+          <td>Rutland</td>
+          <td>Vermont</td>
+          <td>New England</td>
+          <td>Medical Devices</td>
+          <td>Healthy Design manufactures the Exersides Refraint, which is a physical restraint alternative for confused or intubated patients attached to vital tubes and lines.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$199,375</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 62 -->
+        <tr>
+          <td>62</td>
+          <td>ImCare Biotech, Inc.</td>
+          <td><a href="https://www.imcarebiotech.com/" target="_blank" rel="noopener">https://www.imcarebiotech.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/imcare-biotech/" target="_blank" rel="noopener">https://www.linkedin.com/company/imcare-biotech/</a></td>
+          <td>NA</td>
+          <td>Horsham</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Diagnostics, Pharmaceuticals</td>
+          <td>Diagnostic and therapeutic products for the treatment and management of liver diseases, including liver cancer.</td>
+          <td>NCI</td>
+          <td>$2.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 63 -->
+        <tr>
+          <td>63</td>
+          <td>Immunogenics LLC (dba ImmunogenX)</td>
+          <td><a href="https://immunogenx.com/" target="_blank" rel="noopener">https://immunogenx.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/immunogenx-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/immunogenx-inc/</a></td>
+          <td>NA</td>
+          <td>Newport Beach</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics for celiac disease.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 64 -->
+        <tr>
+          <td>64</td>
+          <td>Inherent Targeting LLC</td>
+          <td><a href="https://www.inherenttargeting.com/" target="_blank" rel="noopener">https://www.inherenttargeting.com/</a></td>
+          <td>NA</td>
+          <td>Oregon Health &amp; Science University</td>
+          <td>Portland</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices, Biotechnology</td>
+          <td>Nerve targeted fluorescent contrast agents for surgical guidance.</td>
+          <td>SBIR</td>
+          <td>$2.25M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 65 -->
+        <tr>
+          <td>65</td>
+          <td>Innovation Research &amp; Training Inc.</td>
+          <td><a href="https://irtinc.us/" target="_blank" rel="noopener">https://irtinc.us/</a></td>
+          <td><a href="https://www.linkedin.com/company/innovation-research-&-training/" target="_blank" rel="noopener">https://www.linkedin.com/company/innovation-research-&-training/</a></td>
+          <td>NA</td>
+          <td>Durham</td>
+          <td>North Carolina</td>
+          <td>Southeast</td>
+          <td>Digital Health</td>
+          <td>Behavioral science research focused on enhancing the mental health, health, and quality of life of children, adolescents, families, communities, and organizations.</td>
+          <td>NATIONAL INSTITUTE OF ARTHRITIS AND MUSCULOSKELETAL AND SKIN DISEASES</td>
+          <td>$305,101</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 66 -->
+        <tr>
+          <td>66</td>
+          <td>Innovations Unlimited, LLC</td>
+          <td><a href="http://innovationsunlimitedllc.com/" target="_blank" rel="noopener">http://innovationsunlimitedllc.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Perth Amboy</td>
+          <td>New Jersey</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices</td>
+          <td>Low-cost, life-saving accessory to automatically detect and alert caregivers to tracheostomy tube decannulation.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 67 -->
+        <tr>
+          <td>67</td>
+          <td>Innovative Design Labs Inc.</td>
+          <td><a href="https://www.innovativedesignlabs.com/" target="_blank" rel="noopener">https://www.innovativedesignlabs.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/innovative-design-labs/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/innovative-design-labs/about/</a></td>
+          <td>NA</td>
+          <td>Minneapolis</td>
+          <td>Minnesota</td>
+          <td>Midwest</td>
+          <td>Medical Devices</td>
+          <td>Developing products from concept to manufacturing for medical and consumer markets. Specialties include embedded electronics, sensor fusion, wireless systems, and algorithm design and implementation.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 68 -->
+        <tr>
+          <td>68</td>
+          <td>Innovative Scientific Solutions, Inc.</td>
+          <td><a href="https://innssi.com/" target="_blank" rel="noopener">https://innssi.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/innovative-scientific-solutions-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/innovative-scientific-solutions-inc/</a></td>
+          <td>NA</td>
+          <td>Dayton</td>
+          <td>Ohio</td>
+          <td>Midwest</td>
+          <td>Measurement, Diagnostics</td>
+          <td>Measurement and instrumentation solutions in the areas of Fluid Dynamics, Aerodynamics, Combustion Analysis, and Pressure/Force quantification.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 69 -->
+        <tr>
+          <td>69</td>
+          <td>Insightfil LLP</td>
+          <td><a href="https://insightfil.com/" target="_blank" rel="noopener">https://insightfil.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/insightfil/" target="_blank" rel="noopener">https://www.linkedin.com/company/insightfil/</a></td>
+          <td>Massachusetts Institute of Technology</td>
+          <td>Boston</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Medical Information Systems</td>
+          <td>Costs and risks reduction systems associated with medication administration.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 70 -->
+        <tr>
+          <td>70</td>
+          <td>Insilicom LLC</td>
+          <td><a href="https://insilicom.com/" target="_blank" rel="noopener">https://insilicom.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/insilicom-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/insilicom-llc/</a></td>
+          <td>NA</td>
+          <td>Tallahassee</td>
+          <td>Florida</td>
+          <td>Southeast</td>
+          <td>Digital Health</td>
+          <td>Bioinformatics big data and analytics platform named Biomedical Knowledge Discovery Engine (BioKDE), offering literature search, knowledge management, and knowledge discovery functions, for biomedical and genomics applications.</td>
+          <td>NATIONAL INSTITUTE OF GENERAL MEDICAL SCIENCES</td>
+          <td>$225,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 71 -->
+        <tr>
+          <td>71</td>
+          <td>Instadiagnostics Inc.</td>
+          <td><a href="http://www.instadiagnostics.com/" target="_blank" rel="noopener">http://www.instadiagnostics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/instadiagnostics-inc./" target="_blank" rel="noopener">https://www.linkedin.com/company/instadiagnostics-inc./</a></td>
+          <td>Drexel University</td>
+          <td>Philadelphia</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Diagnostics, Medical Devices</td>
+          <td>A rapid, quantitative, point-of-care (POC) diagnostic platform delivering centralized laboratory testing to the patient's bedside.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 72 -->
+        <tr>
+          <td>72</td>
+          <td>Intact Genomics, Inc.</td>
+          <td><a href="https://intactgenomics.com/" target="_blank" rel="noopener">https://intactgenomics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/intact-genomics-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/intact-genomics-inc/</a></td>
+          <td>NA</td>
+          <td>St. Louis</td>
+          <td>Missouri</td>
+          <td>Midwest</td>
+          <td>Biotechnology</td>
+          <td>Custom genomic services including unbiased bacterial artificial chromosome (BAC) libraries and DNA library screening, and life science products including enzymes, competent cells, for high-quality gene discovery and genomic research</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 73 -->
+        <tr>
+          <td>73</td>
+          <td>Integrated Medical Sensors Inc.</td>
+          <td><a href="http://www.integratedmedicalsensors.com/" target="_blank" rel="noopener">http://www.integratedmedicalsensors.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/integratedmedicalsensors/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/integratedmedicalsensors/about/</a></td>
+          <td>California Institute of Technology</td>
+          <td>Irvine</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices, Sensors</td>
+          <td>Integrated, ultra-miniature wireless electrochemical glucose sensor for diabetes patients.</td>
+          <td>NATIONAL INSTITUTE OF DIABETES AND DIGESTIVE AND KIDNEY DISEASES</td>
+          <td>$705,831</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 74 -->
+        <tr>
+          <td>74</td>
+          <td>JBS Science, Inc.</td>
+          <td><a href="https://jbs-science.com/" target="_blank" rel="noopener">https://jbs-science.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/jbs-science-inc./about/" target="_blank" rel="noopener">https://www.linkedin.com/company/jbs-science-inc./about/</a></td>
+          <td>NA</td>
+          <td>Doylestown</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Diagnostics</td>
+          <td>Cell-free DNA (cfDNA) in urine technology for improved cancer screening and management by liquid biopsy, using sensitive qPCR assays for tumor DNA markers using cfDNA in urine and blood, and robust methods for cfDNA isolation.</td>
+          <td>NATIONAL INSTITUTE OF ALLERGY AND INFECTIOUS DISEASES</td>
+          <td>$9.8M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 75 -->
+        <tr>
+          <td>75</td>
+          <td>Jaan Biotherapeutics LLC</td>
+          <td><a href="http://jaanbio.com/" target="_blank" rel="noopener">http://jaanbio.com/</a></td>
+          <td><a href="https://www.linkedin.com/in/jaan-biotherapeutics-llc-278b7b127/" target="_blank" rel="noopener">https://www.linkedin.com/in/jaan-biotherapeutics-llc-278b7b127/</a></td>
+          <td>Salk Institute</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>MicroRNA modulating therapeutics to treat Duchenne Muscular Dystrophy, Ischemic heart disease, and Hypertrophic (HCM) cardiomyopathy.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 76 -->
+        <tr>
+          <td>76</td>
+          <td>K Medical LLC</td>
+          <td><a href="http://www.kmedical.net/" target="_blank" rel="noopener">http://www.kmedical.net/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Los Angeles</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>Simple and effective healthcare for the elderly focused on treating bed sores while undergoing chronic illnesses in later stages of life via improved hospital bed technology that address the problem of bedsores for patients with limited or no mobility.</td>
+          <td>STTR</td>
+          <td>$256K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 77 -->
+        <tr>
+          <td>77</td>
+          <td>KaloCyte, Inc.</td>
+          <td><a href="https://www.kalocyte.com/" target="_blank" rel="noopener">https://www.kalocyte.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/kalocyte-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/kalocyte-inc/</a></td>
+          <td>Washington University in St. Louis, and University of Maryland, Baltimore</td>
+          <td>Baltimore</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Nanomaterials, Biotechnology</td>
+          <td>Developer of ErythroMer, a dried, bio-inspired nanoparticle-encapsulated human hemoglobin artificial red blood cell, to treat life-threatening blood loss when stored red blood cells are unavailable, undesirable or in short supply.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$499,999</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 78 -->
+        <tr>
+          <td>78</td>
+          <td>KromaTiD, Inc.</td>
+          <td><a href="https://kromatid.com/" target="_blank" rel="noopener">https://kromatid.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/kromatid/" target="_blank" rel="noopener">https://www.linkedin.com/company/kromatid/</a></td>
+          <td>NA</td>
+          <td>Longmont</td>
+          <td>Colorado</td>
+          <td>Rocky-Mountains</td>
+          <td>Biotechnology</td>
+          <td>Single-cell innovative solutions for the discovery, evaluation, and characterization of gene editing, chromosomal rearrangements, and structural variations for cell and gene therapy scientists.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 79 -->
+        <tr>
+          <td>79</td>
+          <td>LYSSN.IO, INC.</td>
+          <td><a href="https://www.lyssn.io/" target="_blank" rel="noopener">https://www.lyssn.io/</a></td>
+          <td>NA</td>
+          <td>University of Washington</td>
+          <td>Seattle</td>
+          <td>Washington</td>
+          <td>Pacific-Costal</td>
+          <td>Software, Healthcare Information Systems.</td>
+          <td>Artificial Intelligence (AI) driven natural language processing (NPL) for healthcare communication applications that enables the documentation and evaluation of spoken communications that can be leveraged into more efficient healthcare operations.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 80 -->
+        <tr>
+          <td>80</td>
+          <td>Lectenz Bio LLC</td>
+          <td><a href="https://lectenz.com/" target="_blank" rel="noopener">https://lectenz.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/lectenz_bio/" target="_blank" rel="noopener">https://www.linkedin.com/company/lectenz_bio/</a></td>
+          <td>University of Georgia</td>
+          <td>Athens</td>
+          <td>Georgia</td>
+          <td>Southeast</td>
+          <td>Diagnostics</td>
+          <td>Products utilizing glycan-specific reagents to speed up and simplify the detection and discovery of glycan-based disease biomarkers.</td>
+          <td>National Institute of General Medicine</td>
+          <td>$223K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 81 -->
+        <tr>
+          <td>81</td>
+          <td>Lenima Field Diagnostics LLC</td>
+          <td><a href="http://www.lenimafield.com/" target="_blank" rel="noopener">http://www.lenimafield.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Philadelphia</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Diagnostics</td>
+          <td>Point of care molecular testing utilizing piezoelectric plate sensors (PEPS) based on a novel thin crystalline material that allows unsurpassed sensitivity, simplifying the genetic testing process, permitting rapid and simultaneous testing of multiple nucleic acids including both DNAs and RNAs in a simple, elegant, portable, and low-cost format.</td>
+          <td>NATIONAL INSTITUTE OF ALLERGY AND INFECTIOUS DISEASES</td>
+          <td>$375,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 82 -->
+        <tr>
+          <td>82</td>
+          <td>MapHabit, Inc.</td>
+          <td><a href="https://www.maphabit.com/" target="_blank" rel="noopener">https://www.maphabit.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/maphabit/" target="_blank" rel="noopener">https://www.linkedin.com/company/maphabit/</a></td>
+          <td>NA</td>
+          <td>Atlanta</td>
+          <td>Georgia</td>
+          <td>Southeast</td>
+          <td>Digital Health, Health Information Services</td>
+          <td>Interactive care management platform that encourages independence and improves quality of life for individuals with cognitive, intellectual, or developmental disabilities and their circle of support.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$449,826</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 83 -->
+        <tr>
+          <td>83</td>
+          <td>Meadowlark Science and Education LLC</td>
+          <td><a href="http://www.meadowlarkscience.com/" target="_blank" rel="noopener">http://www.meadowlarkscience.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Missoula</td>
+          <td>Montana</td>
+          <td>Rocky-Mountains</td>
+          <td>Education</td>
+          <td>Interactive educational tools and materials for multiple platforms by working with STEM teachers with the goal of developing immersive game concepts relevant in today's educational environment.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 84 -->
+        <tr>
+          <td>84</td>
+          <td>MediCollector LLC</td>
+          <td><a href="https://www.medicollector.com/" target="_blank" rel="noopener">https://www.medicollector.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/medicollector/" target="_blank" rel="noopener">https://www.linkedin.com/company/medicollector/</a></td>
+          <td>Wyss Institute at Harvard University</td>
+          <td>Boston</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Healthcare Information Systems</td>
+          <td>Tools to acquire, record and stream hospital data and enable better medical device data integration.</td>
+          <td>NIBIB</td>
+          <td>$251K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 85 -->
+        <tr>
+          <td>85</td>
+          <td>Medical Guidance Systems, LLC</td>
+          <td><a href="https://www.medgyde.com/" target="_blank" rel="noopener">https://www.medgyde.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/medical-guidance-systems/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/medical-guidance-systems/about/</a></td>
+          <td>NA</td>
+          <td>Saint Louis</td>
+          <td>Missouri</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals, Nanomaterials</td>
+          <td>Cancer immunotherapy and nanotechnology-enabled drug delivery providing targeted theragnostic opportunities for patients diagnosed with poor prognosis cancers.</td>
+          <td>SBIR</td>
+          <td>$2.5m</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 86 -->
+        <tr>
+          <td>86</td>
+          <td>Metalmark Innovations, Inc.</td>
+          <td><a href="https://www.metalmark.xyz/" target="_blank" rel="noopener">https://www.metalmark.xyz/</a></td>
+          <td><a href="https://www.linkedin.com/company/metalmark/" target="_blank" rel="noopener">https://www.linkedin.com/company/metalmark/</a></td>
+          <td>Harvard University</td>
+          <td>Cambridge</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Nanomaterials</td>
+          <td>Provider of nanostructured coatings for breaking down indoor air pollutants, with additional potential applications in fuel cells and CO2 conversion.</td>
+          <td>NATIONAL INSTITUTE OF ENVIRONMENTAL HEALTH SCIENCES</td>
+          <td>$842,425</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 87 -->
+        <tr>
+          <td>87</td>
+          <td>Microsensor Labs LLC</td>
+          <td><a href="https://www.microsensorlabs.com/" target="_blank" rel="noopener">https://www.microsensorlabs.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/microsensor-labs/" target="_blank" rel="noopener">https://www.linkedin.com/company/microsensor-labs/</a></td>
+          <td>NA</td>
+          <td>Chicago</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Sensors</td>
+          <td>Sensor technologies for health care applications.</td>
+          <td>NINR, NIA</td>
+          <td>$2.9M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 88 -->
+        <tr>
+          <td>88</td>
+          <td>Mulberry Biotherapeutics, Inc. (previously NF Bio, Inc.)</td>
+          <td><a href="https://www.mulberrybio.com/" target="_blank" rel="noopener">https://www.mulberrybio.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Waltham</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Pharmaceuticals</td>
+          <td>Targeted bacteria-mediated therapeutics for patients affected with the rare genetic disorder neurofibromatosis Type 2 (NF2) and other non-cancerous neoplasms.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 89 -->
+        <tr>
+          <td>89</td>
+          <td>Myolex Inc.</td>
+          <td><a href="https://www.myolex.com/" target="_blank" rel="noopener">https://www.myolex.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/myolex/" target="_blank" rel="noopener">https://www.linkedin.com/company/myolex/</a></td>
+          <td>Beth Israel Deaconess Medical Center</td>
+          <td>Brookline</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Medical Devices</td>
+          <td>Provider of devices used to assess muscle condition that utilizes Myolex's patented technology, Electrical Impedance Myography (EIM).</td>
+          <td>NIAMS</td>
+          <td>$225K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 90 -->
+        <tr>
+          <td>90</td>
+          <td>Nami Therapeutics Corporation</td>
+          <td><a href="http://www.namitherapeutics.com/" target="_blank" rel="noopener">http://www.namitherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/nami-therapeutics/" target="_blank" rel="noopener">https://www.linkedin.com/company/nami-therapeutics/</a></td>
+          <td>University of Connecticut</td>
+          <td>Storrs</td>
+          <td>Connecticut</td>
+          <td>New England</td>
+          <td>Nanomaterials</td>
+          <td>Nanoparticles for the targeted delivery of therapeutic agents, including radio-therapeutics, to tumors.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 91 -->
+        <tr>
+          <td>91</td>
+          <td>NanoDe Therapeutics Inc.</td>
+          <td><a href="https://nanodetherapeutics.com/" target="_blank" rel="noopener">https://nanodetherapeutics.com/</a></td>
+          <td>NA</td>
+          <td>Rhode Island Hospital</td>
+          <td>Barrington</td>
+          <td>Rhode Island</td>
+          <td>New England</td>
+          <td>Pharmaceuticals</td>
+          <td>New nucleic acid therapeutics including RNA interference (RNAi), mRNA, and DNA (gene therapy) focused on cancer and arthritis treatment.</td>
+          <td>STTR</td>
+          <td>$350K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 92 -->
+        <tr>
+          <td>92</td>
+          <td>Nemametrix, Inc (DBA InVivo Biosystems)</td>
+          <td><a href="https://invivobiosystems.com/" target="_blank" rel="noopener">https://invivobiosystems.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/invivobiosystems/" target="_blank" rel="noopener">https://www.linkedin.com/company/invivobiosystems/</a></td>
+          <td>University of Oregon, University of Utah</td>
+          <td>Eugene</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Biotechnology</td>
+          <td>Custom CRISPR genome-edited C. elegans and zebrafish models to enable aging, developmental and disease studies.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 93 -->
+        <tr>
+          <td>93</td>
+          <td>Neurocarrus Inc.</td>
+          <td><a href="https://neurocarrus.com/" target="_blank" rel="noopener">https://neurocarrus.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/neurocarrus/" target="_blank" rel="noopener">https://www.linkedin.com/company/neurocarrus/</a></td>
+          <td>Univeristy of Nebraska-Lincoln</td>
+          <td>Monterey</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Biotechnology</td>
+          <td>Biotechnology company developing a novel drug delivery technology to safely disrupt pain signals without addiction-forming medications or disruption of muscular control.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 94 -->
+        <tr>
+          <td>94</td>
+          <td>Neuroene Therapeutics LLC</td>
+          <td><a href="https://neuroenetherapeutics.com/" target="_blank" rel="noopener">https://neuroenetherapeutics.com/</a></td>
+          <td>NA</td>
+          <td>Medical University of South Carolina</td>
+          <td>Washington</td>
+          <td>District of Columbia (DC)</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Developing a novel class of well-tolerated, brain-penetrating, non-sedating small molecule compounds to protect mitochondrial and neurological health.</td>
+          <td>STTR, SBIR</td>
+          <td>$225K, $50K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 95 -->
+        <tr>
+          <td>95</td>
+          <td>Neurofieldz Inc.</td>
+          <td><a href="https://www.neurofieldz.com/" target="_blank" rel="noopener">https://www.neurofieldz.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/neurofieldz-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/neurofieldz-inc/</a></td>
+          <td>Northeastern University</td>
+          <td>Newton Center</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Medical Devices</td>
+          <td>Products for portable, objective diagnosis and therapy for vision and brain health utilizing wireless electric brain sensors with a virtual reality smartphone display enabling custom visual stimulus patterns, providing tests for neuro-visual disorders.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 96 -->
+        <tr>
+          <td>96</td>
+          <td>Novear Therapeutics LLC</td>
+          <td><a href="http://noveartherapeutics.com/" target="_blank" rel="noopener">http://noveartherapeutics.com/</a></td>
+          <td>NA</td>
+          <td>Southern Illinois University School of Medicine</td>
+          <td>Springfield</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Physiological restoration of hearing in individuals with acquired sensorineural hearing loss such as noise induced hearing loss (NIHL), by repurposing FDA approved drugs with low toxicity profiles.</td>
+          <td>SBIR</td>
+          <td>$225K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 97 -->
+        <tr>
+          <td>97</td>
+          <td>NovoMedix, LLC</td>
+          <td><a href="http://www.novomedix.com/" target="_blank" rel="noopener">http://www.novomedix.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/novomedix-llc/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/novomedix-llc/about/</a></td>
+          <td>NA</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Proprietary small molecules that modulate key regulatory pathways which drive cancer, fibrosis, and/or heart disease, with a focus on the inhibition of IL-11, an emerging, compelling therapeutic target in both oncology and fibrosis.</td>
+          <td>SBIR</td>
+          <td>$675K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 98 -->
+        <tr>
+          <td>98</td>
+          <td>NuRelm, Inc.</td>
+          <td><a href="https://nurelm.com/" target="_blank" rel="noopener">https://nurelm.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/nurelm/" target="_blank" rel="noopener">https://www.linkedin.com/company/nurelm/</a></td>
+          <td>NA</td>
+          <td>Pittsburgh</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Sofware, Digital Health</td>
+          <td>Mobile and Internet software applications for behavioral health utilizing digital biomarkers.</td>
+          <td>NATIONAL INSTITUTE OF MENTAL HEALTH</td>
+          <td>$593K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 99 -->
+        <tr>
+          <td>99</td>
+          <td>Nutriwyo LLC</td>
+          <td><a href="https://nutriwyo.com/" target="_blank" rel="noopener">https://nutriwyo.com/</a></td>
+          <td>NA</td>
+          <td>University of Wyoming</td>
+          <td>Laramie</td>
+          <td>Wyoming</td>
+          <td>Rocky-Mountains</td>
+          <td>Laboratory Services</td>
+          <td>Validation services of the structure function claims for diverse nutraceuticals, natural products, dietary supplements, sports nutrients, functional foods, wellness products and medical devices, as well as therapeutics to treat diabetic foot ulcers.</td>
+          <td>NIDDK</td>
+          <td>$228K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 100 -->
+        <tr>
+          <td>100</td>
+          <td>Obsidio, Inc.</td>
+          <td><a href="https://www.obsidiomed.com/" target="_blank" rel="noopener">https://www.obsidiomed.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/obsidio-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/obsidio-inc/</a></td>
+          <td>Brigham and Women's Hospital, Mass Genal Hospital</td>
+          <td>Redwood City</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>Medical device company developing a biomaterial platform technology to enable minimally-invasive occlusion of blood vessels with applications in interventional radiology and interventional oncology.</td>
+          <td>NIH NHLBI</td>
+          <td>$2.1M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 101 -->
+        <tr>
+          <td>101</td>
+          <td>Ocuvera LLC</td>
+          <td><a href="https://ocuvera.com/" target="_blank" rel="noopener">https://ocuvera.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/ocuvera/" target="_blank" rel="noopener">https://www.linkedin.com/company/ocuvera/</a></td>
+          <td>NA</td>
+          <td>Lincoln</td>
+          <td>Nebraska</td>
+          <td>Midwest</td>
+          <td>Software, Digital Health</td>
+          <td>AI software to help predict when a patient will exit the bed and alert nurses before it happens, thus preventing falls and reducing injuries and deaths.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$800k</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 102 -->
+        <tr>
+          <td>102</td>
+          <td>Oleolive Inc.</td>
+          <td><a href="https://www.oleo.live/" target="_blank" rel="noopener">https://www.oleo.live/</a></td>
+          <td><a href="https://www.linkedin.com/company/oleolive/" target="_blank" rel="noopener">https://www.linkedin.com/company/oleolive/</a></td>
+          <td>University of Louisiana at Monroe</td>
+          <td>Shreveport</td>
+          <td>Louisiana</td>
+          <td>Southeast</td>
+          <td>Pharmaceuticals</td>
+          <td>Biotechnology focused on extracting and purifying extra virgin olive oil polyphenols such as Oleocanthal and utilizing these in therapeutics addressing neurology (Alzheimer's disease and related dementias), Oncology and certain types of cancers, hemostasis, and anti-aging.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$612K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 103 -->
+        <tr>
+          <td>103</td>
+          <td>Optosurgical, LLC</td>
+          <td><a href="https://www.optosurgical.com/" target="_blank" rel="noopener">https://www.optosurgical.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/optosurgical/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/optosurgical/about/</a></td>
+          <td>NA</td>
+          <td>Baltimore</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices</td>
+          <td>Medical device point-of-care camera that can provide structural and functional tissue information in real-time, utilizing fluorescence imaging technology to guide surgeons in thyroid and parathyroid surgery.</td>
+          <td>NIAPIB</td>
+          <td>$260K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 104 -->
+        <tr>
+          <td>104</td>
+          <td>Oregon Research Behavioral Interventions Strategies, Inc (DBA Influents Innovations)</td>
+          <td><a href="https://influentsin.com/" target="_blank" rel="noopener">https://influentsin.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/influents-innovations/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/influents-innovations/about/</a></td>
+          <td>NA</td>
+          <td>Eugene</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Healthcare Information Systems</td>
+          <td>Development and commercialization of evidence-based products and services for the health care, social services, and education markets.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 105 -->
+        <tr>
+          <td>105</td>
+          <td>PETcoil Inc.</td>
+          <td><a href="https://www.petcoil.com/" target="_blank" rel="noopener">https://www.petcoil.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/petcoil/" target="_blank" rel="noopener">https://www.linkedin.com/company/petcoil/</a></td>
+          <td>Stanford University</td>
+          <td>Sunnyvale</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>A removable positron emission tomography (PET) insert that enables existing magnetic resonance imaging (MRI) scanners to cost-effectively achieve high-performance PET/MRI.</td>
+          <td>STTR</td>
+          <td>$1.4M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 106 -->
+        <tr>
+          <td>106</td>
+          <td>PGXL Technologies, LLC</td>
+          <td><a href="https://www.sbir.gov/sbirsearch/detail/679084" target="_blank" rel="noopener">https://www.sbir.gov/sbirsearch/detail/679084</a></td>
+          <td><a href="https://www.linkedin.com/company/pgxl-technologies/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/pgxl-technologies/about/</a></td>
+          <td>University of Louisville</td>
+          <td>Louisville</td>
+          <td>Kentucky</td>
+          <td>Southeast</td>
+          <td>Diagnostics</td>
+          <td>Biomarker development technology for laboratory diagnostic tests focused on urine-based tests for detecting obstructive sleep apnea.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 107 -->
+        <tr>
+          <td>107</td>
+          <td>Pax Neuroscience, Inc.</td>
+          <td><a href="https://www.paxneuroscience.com/" target="_blank" rel="noopener">https://www.paxneuroscience.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/pax-neuroscience-inc-/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/pax-neuroscience-inc-/about/</a></td>
+          <td>University of Illinois College of Medicine</td>
+          <td>Beverly Hills</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Diagnostics</td>
+          <td>Clinical diagnostics focused on blood tests for depression diagnosis and for antidepressant response, with the tests based on novel protein biomarkers derived from hypothesis-driven data.</td>
+          <td>STTR</td>
+          <td>$2M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 108 -->
+        <tr>
+          <td>108</td>
+          <td>Phi Optics, Inc.</td>
+          <td><a href="https://phioptics.com/" target="_blank" rel="noopener">https://phioptics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/phi-optics-inc-/" target="_blank" rel="noopener">https://www.linkedin.com/company/phi-optics-inc-/</a></td>
+          <td>University of Illinois at Urbana-Champaign</td>
+          <td>Champaign</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Image Analysis</td>
+          <td>Optical imaging systems aimed at augmenting conventional optical microscopy, utilizing standard tools and processes while combining the performance of traditional modalities of a light microscope (e.g. fluorescence, DIC, phase contrast) with the real-time 3D topography capabilities of Quantitative Phase Imaging (QPI).</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 109 -->
+        <tr>
+          <td>109</td>
+          <td>Photon Biosciences, LLC</td>
+          <td><a href="https://photonbiosciences.com/" target="_blank" rel="noopener">https://photonbiosciences.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/photonbiosciences/" target="_blank" rel="noopener">https://www.linkedin.com/company/photonbiosciences/</a></td>
+          <td>Washington State University</td>
+          <td>Spokane</td>
+          <td>Washington</td>
+          <td>Pacific-Costal</td>
+          <td>Diagnostics</td>
+          <td>An ultrasensitive detection platform that combines bioengineered proteins with a unique in vivo biomineralization process that results in a number of different genetically expressible luminescent bionanoparticles that are non-bleaching and non-blinking with luminescence intensities comparable to fluorescent organic molecules.</td>
+          <td>NIAID</td>
+          <td>$256K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 110 -->
+        <tr>
+          <td>110</td>
+          <td>Photonic Pharma LLC</td>
+          <td><a href="https://www.photonicpharma.com/" target="_blank" rel="noopener">https://www.photonicpharma.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/photonic-pharma/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/photonic-pharma/about/</a></td>
+          <td>University of Minnesota</td>
+          <td>Minneapolis</td>
+          <td>Minnesota</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Early phase drug development - Lead Discovery - using fluorescent biosensor engineering and fluorescence lifetime detection in living cells to discover novel small-molecule effectors of therapeutically important protein targets. This technology increases in the precision of high-throughput screening of small-molecule libraries and improve the productivity of pharmaceutical development.</td>
+          <td>NINDS</td>
+          <td>$1.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 111 -->
+        <tr>
+          <td>111</td>
+          <td>Plakous Therapeutics, Inc.</td>
+          <td><a href="https://www.plakoustherapeutics.com/" target="_blank" rel="noopener">https://www.plakoustherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/plakous-therapeutics/" target="_blank" rel="noopener">https://www.linkedin.com/company/plakous-therapeutics/</a></td>
+          <td>NA</td>
+          <td>Winston-Salem</td>
+          <td>North Carolina</td>
+          <td>Southeast</td>
+          <td>Pharmaceuticals</td>
+          <td>Cell free, placenta powered bio-therapeutics to drive in situ restorative and regenerative healing with cytokines and growth factors remaining in the human placenta after the delivery.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 112 -->
+        <tr>
+          <td>112</td>
+          <td>PolyCore Therapeutics LLC</td>
+          <td><a href="https://polycoretherapeutics.com/" target="_blank" rel="noopener">https://polycoretherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/polycore-therapeutics/" target="_blank" rel="noopener">https://www.linkedin.com/company/polycore-therapeutics/</a></td>
+          <td>Drexel University</td>
+          <td>Philadelphia</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics treatments for dyskinesia and cognitive impairment associated with CNS disorders.</td>
+          <td>NINDS</td>
+          <td>$1.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 113 -->
+        <tr>
+          <td>113</td>
+          <td>Potteiger Consulting Services, LLC (DBA Generation Connect)</td>
+          <td><a href="https://generationconnect.app/" target="_blank" rel="noopener">https://generationconnect.app/</a></td>
+          <td><a href="https://www.linkedin.com/company/generation-connect/" target="_blank" rel="noopener">https://www.linkedin.com/company/generation-connect/</a></td>
+          <td>NA</td>
+          <td>York</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Digital Health</td>
+          <td>Mobile app solutions to help home care providers personalize engagement for clients that are living with dementia.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 114 -->
+        <tr>
+          <td>114</td>
+          <td>Precision Sensing LLC</td>
+          <td><a href="https://www.sbir.gov/sbirsearch/detail/1529903" target="_blank" rel="noopener">https://www.sbir.gov/sbirsearch/detail/1529903</a></td>
+          <td><a href="https://www.linkedin.com/in/larry-pierce-6a56b0117/" target="_blank" rel="noopener">https://www.linkedin.com/in/larry-pierce-6a56b0117/</a></td>
+          <td>NA</td>
+          <td>Seattle</td>
+          <td>Washington</td>
+          <td>Pacific-Costal</td>
+          <td>Image Analysis</td>
+          <td>Medical imaging and sensing technologies that improve image fidelity and allow for personalized patient care.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$1M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 115 -->
+        <tr>
+          <td>115</td>
+          <td>Proactive Life Inc. (DBA Sleepspace)</td>
+          <td><a href="https://sleepspace.com/" target="_blank" rel="noopener">https://sleepspace.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/proactive-life-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/proactive-life-llc/</a></td>
+          <td>NA</td>
+          <td>Manhattan</td>
+          <td>New York</td>
+          <td>Mid-Atlantic</td>
+          <td>Mobile App</td>
+          <td>Sleep detection and sleep improvement system that works with all major wearable devices and smartphones.</td>
+          <td>NIA</td>
+          <td>$2.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 116 -->
+        <tr>
+          <td>116</td>
+          <td>Protillion Biosciences Inc.</td>
+          <td><a href="https://www.protillion.com/" target="_blank" rel="noopener">https://www.protillion.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/protillion/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/protillion/about/</a></td>
+          <td>Stanford University</td>
+          <td>Burlingame</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals, Biotechnology</td>
+          <td>New high-throughput protein display platform designed to improve traditional approaches to the design and development of protein-based drugs</td>
+          <td>NGIMS</td>
+          <td>$855,260</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 117 -->
+        <tr>
+          <td>117</td>
+          <td>QMIS, LLC</td>
+          <td><a href="https://www.qmismvp.com/" target="_blank" rel="noopener">https://www.qmismvp.com/</a></td>
+          <td>NA</td>
+          <td>University of Chicago</td>
+          <td>Chicago</td>
+          <td>Illinois</td>
+          <td>Midwest</td>
+          <td>Software, Image Analysis, Diagnostics</td>
+          <td>MRI-based quantitative and automated tools for improved diagnosis of prostate cancer (PCa).</td>
+          <td>STTR</td>
+          <td>$450K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 118 -->
+        <tr>
+          <td>118</td>
+          <td>QUA Inc.</td>
+          <td><a href="https://www.sbir.gov/node/1541417" target="_blank" rel="noopener">https://www.sbir.gov/node/1541417</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>New Rochelle</td>
+          <td>New York</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices</td>
+          <td>Developer and patent holder of a bedside commode that resolves transfer difficulties for older adults in need of toileting assistance.</td>
+          <td>NINR</td>
+          <td>$150K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 119 -->
+        <tr>
+          <td>119</td>
+          <td>Quadrant Biosciences Inc.</td>
+          <td><a href="https://quadrantbiosciences.com/" target="_blank" rel="noopener">https://quadrantbiosciences.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/quadrantbiosciencesinc/" target="_blank" rel="noopener">https://www.linkedin.com/company/quadrantbiosciencesinc/</a></td>
+          <td>NA</td>
+          <td>Syracuse</td>
+          <td>New York</td>
+          <td>Mid-Atlantic</td>
+          <td>Diagnostics</td>
+          <td>Epigenetic diagnostics with a focus on the early detection of neurological disorders such as autism spectrum disorder, Parkinson's disease, concussions, and mild traumatic brain injury (mTBI).</td>
+          <td>NATIONAL INSTITUTE OF NEUROLOGICAL DISORDERS AND STROKE</td>
+          <td>$380,848</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 120 -->
+        <tr>
+          <td>120</td>
+          <td>Qualia, Inc.</td>
+          <td><a href="https://www.sbir.gov/node/831629" target="_blank" rel="noopener">https://www.sbir.gov/node/831629</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Dallas</td>
+          <td>Texas</td>
+          <td>Southwest</td>
+          <td>Medical Devices</td>
+          <td>Neural electronic devices for the treatment of neural disorders.</td>
+          <td>SBIR</td>
+          <td>$3.65M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 121 -->
+        <tr>
+          <td>121</td>
+          <td>Quantaras LLC (formerly Quantitative Radiology Solutions)</td>
+          <td><a href="https://quantaras.com/" target="_blank" rel="noopener">https://quantaras.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/quantaras/" target="_blank" rel="noopener">https://www.linkedin.com/company/quantaras/</a></td>
+          <td>University of Pennsylvania</td>
+          <td>Philadelphia</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Software, Image Analysis, Diagnostics</td>
+          <td>Body wide analysis of medical images to personalize cancer diagnostics and treatment decisions.</td>
+          <td>STTR</td>
+          <td>$3.2M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 122 -->
+        <tr>
+          <td>122</td>
+          <td>QuantumBio Inc.</td>
+          <td><a href="http://www.quantumbioinc.com/" target="_blank" rel="noopener">http://www.quantumbioinc.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/quantumbio-inc./" target="_blank" rel="noopener">https://www.linkedin.com/company/quantumbio-inc./</a></td>
+          <td>Penn State University</td>
+          <td>State College</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Software, Pharmaceuticals</td>
+          <td>Software and services focused on computer-aided drug design and structural biology.</td>
+          <td>SBIR</td>
+          <td>1.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 123 -->
+        <tr>
+          <td>123</td>
+          <td>Quench Medical Inc.</td>
+          <td><a href="https://quenchmedical.net/" target="_blank" rel="noopener">https://quenchmedical.net/</a></td>
+          <td><a href="https://www.linkedin.com/company/quench-medical/" target="_blank" rel="noopener">https://www.linkedin.com/company/quench-medical/</a></td>
+          <td>NA</td>
+          <td>St. Paul</td>
+          <td>Minnesota</td>
+          <td>Midwest</td>
+          <td>Medical Devices</td>
+          <td>Aerosol platform technology to deliver medicine into deep areas of the lung with better efficiency to increase efficacy in treating pulmonary airway diseases such as lung cancer, COPD, asthma, and cystic fibrosis.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$802,302</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 124 -->
+        <tr>
+          <td>124</td>
+          <td>Raydiant Oximetry, Inc.</td>
+          <td><a href="https://www.raydiantoximetry.com/" target="_blank" rel="noopener">https://www.raydiantoximetry.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/raydiant-oximetry-inc./" target="_blank" rel="noopener">https://www.linkedin.com/company/raydiant-oximetry-inc./</a></td>
+          <td>NA</td>
+          <td>San Ramon</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>Low-cost, non-invasive biomedical device to monitor the oxygen levels in fetal blood to better inform obstetricians during labor situations and improve maternal and fetal outcomes, and decrease cesarean delivery rates.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 125 -->
+        <tr>
+          <td>125</td>
+          <td>Recodagen LLC</td>
+          <td><a href="https://www.sbir.gov/sbirsearch/detail/1678063" target="_blank" rel="noopener">https://www.sbir.gov/sbirsearch/detail/1678063</a></td>
+          <td>NA</td>
+          <td>Washington State University College of Pharmacy and Pharmaceutical Sciences</td>
+          <td>Jackson</td>
+          <td>Ohio</td>
+          <td>Midwest</td>
+          <td>Diagnostics, Pharmaceuticals</td>
+          <td>Carcinoma-specific monoclonal antibodies for therapies and diagnostics.</td>
+          <td>SBIR</td>
+          <td>$300K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 126 -->
+        <tr>
+          <td>126</td>
+          <td>Reia LLC</td>
+          <td><a href="https://www.reiahealth.com/" target="_blank" rel="noopener">https://www.reiahealth.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Lyme</td>
+          <td>New Hampshire</td>
+          <td>New England</td>
+          <td>Medical Devices</td>
+          <td>Pessary device treatment for pelvic organ prolapse.</td>
+          <td>EUNICE KENNEDY SHRIVER NATIONAL INSTITUTE OF CHILD HEALTH &amp; HUMAN DEVELOPMENT</td>
+          <td>$2M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 127 -->
+        <tr>
+          <td>127</td>
+          <td>Respira Labs, Inc.</td>
+          <td><a href="https://www.respiralabs.com/" target="_blank" rel="noopener">https://www.respiralabs.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/respiralabs/" target="_blank" rel="noopener">https://www.linkedin.com/company/respiralabs/</a></td>
+          <td>NA</td>
+          <td>Mountain View</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>A wearable medical device, using low-cost, over-the -counter, sensors, and an associated smartphone app that enables the early detection and prevention of respiratory diseases via "acoustic resonance" technology that can detect air trapping and lung dysfunction.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 128 -->
+        <tr>
+          <td>128</td>
+          <td>Rise Therapeutics, LLC</td>
+          <td><a href="https://www.risetherapeutics.com/" target="_blank" rel="noopener">https://www.risetherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/rise-therapeutics/" target="_blank" rel="noopener">https://www.linkedin.com/company/rise-therapeutics/</a></td>
+          <td>NA</td>
+          <td>Rockville</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Targeted immunological-based biologics using an oral delivery platform for immune modulatory drugs for the treatment of inflammation, autoimmunity, infection, and cancer.</td>
+          <td>SBIR, TEDCO</td>
+          <td>$14M, $200K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 129 -->
+        <tr>
+          <td>129</td>
+          <td>Rivanna Medical, LLC</td>
+          <td><a href="https://rivannamedical.com/" target="_blank" rel="noopener">https://rivannamedical.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/rivanna-medical/" target="_blank" rel="noopener">https://www.linkedin.com/company/rivanna-medical/</a></td>
+          <td>University of Virginia</td>
+          <td>Charlottesville</td>
+          <td>Virginia</td>
+          <td>Southeast</td>
+          <td>Software, Diagnostics, Image Analysis</td>
+          <td>Ultrasound technology with the bone imaging capabilities of x-ray, thus providing radiation-free alternatives to x-ray-based imaging, and combined with AI-enabled image recognition to offer clinicians improved imaging capabilities.</td>
+          <td>SBIR</td>
+          <td>$830,602</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 130 -->
+        <tr>
+          <td>130</td>
+          <td>Robin Medical, Inc.</td>
+          <td><a href="http://www.robinmedical.com/" target="_blank" rel="noopener">http://www.robinmedical.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/robin-medical-inc./about/" target="_blank" rel="noopener">https://www.linkedin.com/company/robin-medical-inc./about/</a></td>
+          <td>NA</td>
+          <td>Baltimore</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Software, Image Analysis, Diagnostics</td>
+          <td>Technology for device tracking and navigation under MRI, providing a "plug &amp; track" system and related accessories that are compatible with any MRI scanner and allow tracking and navigation of interventional devices during MRI scan.</td>
+          <td>SBIR</td>
+          <td>$131,376</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 131 -->
+        <tr>
+          <td>131</td>
+          <td>SEAK Therapeutics LLC</td>
+          <td><a href="https://seaktherapeutics.com/" target="_blank" rel="noopener">https://seaktherapeutics.com/</a></td>
+          <td>NA</td>
+          <td>University of Tennessee Health Science Center</td>
+          <td>Memphis</td>
+          <td>Tennessee</td>
+          <td>Southeast</td>
+          <td>Pharmaceuticals</td>
+          <td>Targeted small molecule drug for pediatric and adult cancers where the target is expressed/over-activated.</td>
+          <td>NATIONAL INSTITUTE OF DIABETES AND DIGESTIVE AND KIDNEY DISEASES</td>
+          <td>$666,667</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 132 -->
+        <tr>
+          <td>132</td>
+          <td>SG Endocrine Research LLC</td>
+          <td><a href="https://www.sger.org/" target="_blank" rel="noopener">https://www.sger.org/</a></td>
+          <td>NA</td>
+          <td>University of Georgia, Athens</td>
+          <td>Athens</td>
+          <td>Georgia</td>
+          <td>Southeast</td>
+          <td>Nanomaterials, Diagnostics, Biotechnology</td>
+          <td>Technologies for addressing disorders related to brain, endocrine, metabolic, and cardiovascular functions. Innovations include nanoparticles for detecting noradrenergic neurons in Alzheimer's disease.</td>
+          <td>STTR</td>
+          <td>$256K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 133 -->
+        <tr>
+          <td>133</td>
+          <td>SIGT, LLC</td>
+          <td><a href="https://www.sbir.gov/node/828691" target="_blank" rel="noopener">https://www.sbir.gov/node/828691</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Columbia</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices</td>
+          <td>An intraoperative High Frequency Dielectric Sensing Radio Frequency Ablation (RFA) Monitoring and Lesion Assessment system to improve RFA outcomes by reducing recurrence rates and preventing collateral injury with a consequent impact on associated health care costs and quality of life for patients.</td>
+          <td>SBIR</td>
+          <td>$300K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 134 -->
+        <tr>
+          <td>134</td>
+          <td>See Yourself Health, LLC</td>
+          <td><a href="https://www.seeyourselfhealth.com/" target="_blank" rel="noopener">https://www.seeyourselfhealth.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/see-yourself-health/" target="_blank" rel="noopener">https://www.linkedin.com/company/see-yourself-health/</a></td>
+          <td>NA</td>
+          <td>Beverly</td>
+          <td>Massachusetts</td>
+          <td>New England</td>
+          <td>Digital Health</td>
+          <td>An immersive metaverse-like digital health platform for chronic disease management, and personal health improvement offering telehealth appointments, peer mentorship, and scientifically-baked social health engagement programs.</td>
+          <td>NIH SBIR</td>
+          <td>$204,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 135 -->
+        <tr>
+          <td>135</td>
+          <td>Sixal Inc.</td>
+          <td><a href="https://sixalinc.wordpress.com/" target="_blank" rel="noopener">https://sixalinc.wordpress.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/sixal-inc./about/" target="_blank" rel="noopener">https://www.linkedin.com/company/sixal-inc./about/</a></td>
+          <td>University of California, Los Anges</td>
+          <td>Santa Monica</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutic preventative treatments for severe IgE-mediated disorders including food allergies, asthma and mastocytosis. The treatments employ the humanization of low affinity anti-IgE mAbs to design an optimal human therapy to mitigate allergic reactions that occur in asthma and severe food allergy.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 136 -->
+        <tr>
+          <td>136</td>
+          <td>Sonavi Labs, Inc.</td>
+          <td><a href="https://sonavilabs.com/" target="_blank" rel="noopener">https://sonavilabs.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/sonavilabs/" target="_blank" rel="noopener">https://www.linkedin.com/company/sonavilabs/</a></td>
+          <td>Johns Hopkins University</td>
+          <td>Baltimore</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices, Software, Digital Health</td>
+          <td>Medical devices and software focused on digital health and telehealth solutions that utilize artificial intelligence to improve easy of use and diagnosis of medical conditions. The company's initial focus is on a digital stethoscope to improve the diagnoses of respiratory diseases.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 137 -->
+        <tr>
+          <td>137</td>
+          <td>South Rampart Pharma, LLC</td>
+          <td><a href="https://southrampartpharma.com/" target="_blank" rel="noopener">https://southrampartpharma.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/south-rampart-pharma-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/south-rampart-pharma-llc/</a></td>
+          <td>Louisiana State University Health Sciences Center New Orleans</td>
+          <td>New Orleans</td>
+          <td>Louisiana</td>
+          <td>Southeast</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics for acute, chronic, and neuropathic pain utilizing a new class of non-opioid pain medicines that do not have the toxicities found in traditional medicines.</td>
+          <td>NATIONAL INSTITUTE OF NEUROLOGICAL DISORDERS AND STROKE</td>
+          <td>$840,427</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 138 -->
+        <tr>
+          <td>138</td>
+          <td>Starship Health Technologies LLC</td>
+          <td><a href="https://starshiphealth.com/" target="_blank" rel="noopener">https://starshiphealth.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/starship-health-technologies-llc/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/starship-health-technologies-llc/about/</a></td>
+          <td>Johns Hopkins University</td>
+          <td>Fort Washington</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Software, Digital Health</td>
+          <td>Research, engineering, and product development focused on digital health solutions including mobile health apps, information systems, and analysis tools to enhance care coordination, and better integrate healthcare with social care.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 139 -->
+        <tr>
+          <td>139</td>
+          <td>Strykagen Corporation</td>
+          <td><a href="http://strykagen.com/" target="_blank" rel="noopener">http://strykagen.com/</a></td>
+          <td>NA</td>
+          <td>University of Nevada, Reno</td>
+          <td>Reno</td>
+          <td>Nevada</td>
+          <td>Rocky-Mountains</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics and diagnostics for rare muscle diseases focused on Duchenne muscular dystrophy (DMD), Becker muscular dystrophy (BMD), Merosin deficient congenital muscular dystrophy (MDC1A) and Limb Girdle Muscular Dystrophies (LGMD).</td>
+          <td>NIH</td>
+          <td>$1.5M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 140 -->
+        <tr>
+          <td>140</td>
+          <td>Summit Biomedical Imaging LLC</td>
+          <td><a href="https://www.summitbiomedicalimaging.com/" target="_blank" rel="noopener">https://www.summitbiomedicalimaging.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/summit-biomedical-imaging/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/summit-biomedical-imaging/about/</a></td>
+          <td>Memorial Sloan Kettering Cancer Center, AstraZeneca</td>
+          <td>New York</td>
+          <td>New York</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Point-of-care oral diagnostic technology focused on improving early cancer detection using fluorescent targeted diagnostic agents. The diagnostic technology is a fluorescent small molecule, PARPi-FL, that detects overexpression of PARP, a DNA repair enzyme, which is common in many cancers. The diagnostic is fast, non-invasive, and accurate, and empowers clinicians to improve outcomes via early intervention.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 141 -->
+        <tr>
+          <td>141</td>
+          <td>SynchroHealth, LLC</td>
+          <td><a href="https://www.synchrohealth.io/" target="_blank" rel="noopener">https://www.synchrohealth.io/</a></td>
+          <td><a href="https://www.linkedin.com/company/synchrohealth-llc/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/synchrohealth-llc/about/</a></td>
+          <td>Dartmouth, The University of North Carolina at Chapel Hil</td>
+          <td>Lyme</td>
+          <td>New Hampshire</td>
+          <td>New England</td>
+          <td>Digital Health, Remote Medical Monitoring</td>
+          <td>Hardware and software solutions for non-invasive detection and acquisition of home-based, longitudinal healthcare data using remote, Bluetooth Low Energy-enabled technologies for synchronous and asynchronous monitoring and feedback.</td>
+          <td>NIA</td>
+          <td>$225K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 142 -->
+        <tr>
+          <td>142</td>
+          <td>Syntr Health Technologies, Inc.</td>
+          <td><a href="https://syntrhealth.com/" target="_blank" rel="noopener">https://syntrhealth.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/syntr-health/" target="_blank" rel="noopener">https://www.linkedin.com/company/syntr-health/</a></td>
+          <td>University of California, Irvine</td>
+          <td>Irvine</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>Medical device for processing a patient's fat cells for reinjection to facilitate natural healing and rejuvenation. The device utilizes a centrifuge-like system that yields dependable and highly viable fat tissue for reinjection.</td>
+          <td>NATIONAL INSTITUTE OF DIABETES AND DIGESTIVE AND KIDNEY DISEASES</td>
+          <td>$1M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 143 -->
+        <tr>
+          <td>143</td>
+          <td>Tellus Therapeutics, Inc.</td>
+          <td><a href="http://www.tellustherapeutics.com/" target="_blank" rel="noopener">http://www.tellustherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/tellus-therapeutics-inc/" target="_blank" rel="noopener">https://www.linkedin.com/company/tellus-therapeutics-inc/</a></td>
+          <td>Duke University</td>
+          <td>Hillsborough</td>
+          <td>North Carolina</td>
+          <td>Southeast</td>
+          <td>Pharmaceuticals</td>
+          <td>Novel small molecules derived from human maternal breast milk for the treatment of newborns with perinatal brain injury.</td>
+          <td>NATIONAL INSTITUTE OF NEUROLOGICAL DISORDERS AND STROKE</td>
+          <td>$1.4M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 144 -->
+        <tr>
+          <td>144</td>
+          <td>Ting Therapeutics LLC</td>
+          <td><a href="https://tingtherapeutics.com/" target="_blank" rel="noopener">https://tingtherapeutics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/ting-therapeutics/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/ting-therapeutics/about/</a></td>
+          <td>Creighton University</td>
+          <td>Omaha</td>
+          <td>Nebraska</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics to prevent and treat hearing loss.</td>
+          <td>NIDCD</td>
+          <td>$2.3M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 145 -->
+        <tr>
+          <td>145</td>
+          <td>Tissue Testing Technologies LLC</td>
+          <td><a href="https://tissuetestingtech.com/" target="_blank" rel="noopener">https://tissuetestingtech.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>North Charleston</td>
+          <td>South Carolina</td>
+          <td>Southeast</td>
+          <td>medical devices, health technology services</td>
+          <td>Cryopreservation methods of biological materials for restoration of patient health and testing purposes.</td>
+          <td>SBIR</td>
+          <td>$5.6M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 146 -->
+        <tr>
+          <td>146</td>
+          <td>Total Child Health aka CHADIS</td>
+          <td><a href="https://www.site.chadis.com/" target="_blank" rel="noopener">https://www.site.chadis.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/total-child-health-inc-/" target="_blank" rel="noopener">https://www.linkedin.com/company/total-child-health-inc-/</a></td>
+          <td>NA</td>
+          <td>Baltimore</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Digital Health, Health Information Services</td>
+          <td>Web-based patient engagement, data collection, and questionnaire system for comprehensive health and mental health care. The system offers web-based screening, diagnostics, and management capabilities that administers and analyzes pre-visit, online questionnaires completed by patients and provides clinicians with instant access to valuable clinical data and resources.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 147 -->
+        <tr>
+          <td>147</td>
+          <td>Training and Implementation Associates</td>
+          <td><a href="https://tiainternational.org/" target="_blank" rel="noopener">https://tiainternational.org/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Miami</td>
+          <td>Florida</td>
+          <td>Southeast</td>
+          <td>Digital Health, Health Information Services</td>
+          <td>Online platform focused on organizational readiness, coaching, peer learning networks, and sustainment, in support of mental health professionals, treatment agencies, and funding agencies in their quest to improve our nation's mental health.</td>
+          <td>NATIONAL HEART, LUNG, AND BLOOD INSTITUTE</td>
+          <td>$700,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 148 -->
+        <tr>
+          <td>148</td>
+          <td>Translational Imaging Innovations, Inc.</td>
+          <td><a href="https://tiinnovations.com/" target="_blank" rel="noopener">https://tiinnovations.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/tiinnovations/" target="_blank" rel="noopener">https://www.linkedin.com/company/tiinnovations/</a></td>
+          <td>Medical College of Wisconsin</td>
+          <td>Hickory</td>
+          <td>North Carolina</td>
+          <td>Southeast</td>
+          <td>Digital Health, Health Information Services</td>
+          <td>Platform providing a suite of software applications that addresses the workflow, data management, and advanced analytics needs of ophthalmology and vision science investigators in a collaborative, secure, environment.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 149 -->
+        <tr>
+          <td>149</td>
+          <td>Translucence Biosystems Inc.</td>
+          <td><a href="https://www.translucencebio.com/" target="_blank" rel="noopener">https://www.translucencebio.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/translucence-biosystems/" target="_blank" rel="noopener">https://www.linkedin.com/company/translucence-biosystems/</a></td>
+          <td>University of California, Irvine</td>
+          <td>Irvine</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Laboratory Services</td>
+          <td>Histology and 3D imaging services providing researchers and clinicians with fast, reliable, and complete 3D analysis of biological samples. Services utilize expertise in tissue clearing, light sheet imaging, computational 3D reconstruction and machine learning-based image analysis.</td>
+          <td>NATIONAL INSTITUTE OF MENTAL HEALTH</td>
+          <td>$1M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 150 -->
+        <tr>
+          <td>150</td>
+          <td>Truvitech, LLC</td>
+          <td><a href="https://www.sbir.gov/node/1242827" target="_blank" rel="noopener">https://www.sbir.gov/node/1242827</a></td>
+          <td><a href="https://www.linkedin.com/company/truvitech/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/truvitech/about/</a></td>
+          <td>University of Miami</td>
+          <td>Miami</td>
+          <td>Florida</td>
+          <td>Southeast</td>
+          <td>Software</td>
+          <td>Computer-based machine learning algorithms combined with biochemical and cellular screening to identify drug targets specific to cellular models of disease with improved speed and efficiency.</td>
+          <td>NATIONAL INSTITUTE OF MENTAL HEALTH</td>
+          <td>$1M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 151 -->
+        <tr>
+          <td>151</td>
+          <td>Tymora Analytical Operations, LLC</td>
+          <td><a href="https://www.tymora-analytical.com/" target="_blank" rel="noopener">https://www.tymora-analytical.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/tymora-analytical-operations/" target="_blank" rel="noopener">https://www.linkedin.com/company/tymora-analytical-operations/</a></td>
+          <td>Purdue University</td>
+          <td>West Lafayette</td>
+          <td>Indiana</td>
+          <td>Midwest</td>
+          <td>Laboratory Services</td>
+          <td>R&amp;D laboratory providing contract services focused on non-invasive biomarker discovery to enable the better understanding and diagnosis of diseases such as cancer and Alzheimer's.</td>
+          <td>NIA</td>
+          <td>$255K</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 152 -->
+        <tr>
+          <td>152</td>
+          <td>UNandUP, LLC</td>
+          <td><a href="https://www.unandup.com/" target="_blank" rel="noopener">https://www.unandup.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/un-up/" target="_blank" rel="noopener">https://www.linkedin.com/company/un-up/</a></td>
+          <td>NA</td>
+          <td>St. Louis</td>
+          <td>Missouri</td>
+          <td>Midwest</td>
+          <td>Pharmaceuticals, Medical Devices, Biotechnology</td>
+          <td>Leverages government funded research focused on cancer therapies, neuroprotection, nanodelivery platforms, robotic interventional cardiology, and neurology systems, into stand-alone, startup, entrepreneurial ventures.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$253,208</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 153 -->
+        <tr>
+          <td>153</td>
+          <td>Veriskin, Inc.</td>
+          <td><a href="http://www.veriskin.com/" target="_blank" rel="noopener">http://www.veriskin.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Medical Devices</td>
+          <td>A non-invasive, low-cost, hand-held medical device that helps non-expert users rapidly and objectively determine whether a suspect skin lesion is cancerous.</td>
+          <td>NATIONAL CANCER INSTITUTE</td>
+          <td>$4.9M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 154 -->
+        <tr>
+          <td>154</td>
+          <td>Vetigenics LLC</td>
+          <td><a href="https://vetigenics.com/" target="_blank" rel="noopener">https://vetigenics.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/vetigenics/" target="_blank" rel="noopener">https://www.linkedin.com/company/vetigenics/</a></td>
+          <td>University Of Pennsylvania</td>
+          <td>Philadelphia</td>
+          <td>Pennsylvania</td>
+          <td>Mid-Atlantic</td>
+          <td>Pharmaceuticals</td>
+          <td>Animal health biopharmaceuticals utilizing antibody-based immunotherapies to treat chronic cancerous diseases of companion animals.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 155 -->
+        <tr>
+          <td>155</td>
+          <td>Viocare, Inc.</td>
+          <td><a href="https://www.viocare.com/" target="_blank" rel="noopener">https://www.viocare.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/viocare/" target="_blank" rel="noopener">https://www.linkedin.com/company/viocare/</a></td>
+          <td>NA</td>
+          <td>Kingston</td>
+          <td>New Jersey</td>
+          <td>Mid-Atlantic</td>
+          <td>Digital Health, Sofware</td>
+          <td>Saas-based digital healthcare software solutions focused on nutrition-based care providing a suite of professionally managed, personalized nutrition solutions that can be used by clinicians to help prevent or manage nutrition-related chronic diseases in patients.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 156 -->
+        <tr>
+          <td>156</td>
+          <td>Vivreon Biosciences, LLC</td>
+          <td><a href="http://www.vivreonbiosciences.com/" target="_blank" rel="noopener">http://www.vivreonbiosciences.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/vivreon-biosciences/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/vivreon-biosciences/about/</a></td>
+          <td>NA</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Small molecule therapeutics for the treatment of chronic diseases developed utilizing a proprietary therapeutic discovery platform. Candidate therapies defend healthy tissue by targeting a central regulator of immune function.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 157 -->
+        <tr>
+          <td>157</td>
+          <td>Voxeleron LLC</td>
+          <td><a href="https://voxeleron.com/" target="_blank" rel="noopener">https://voxeleron.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/voxeleron-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/voxeleron-llc/</a></td>
+          <td>NA</td>
+          <td>San Francisco</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Software</td>
+          <td>Software utilizing computer vision, machine learning (ML), and artificial intelligence (AI) for ophthalmic image analysis.</td>
+          <td>SBIR, NCATS</td>
+          <td>$225K, $1.6M</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 158 -->
+        <tr>
+          <td>158</td>
+          <td>Weinberg Medical Physics, Inc.</td>
+          <td><a href="https://www.weinbergmedicalphysics.com/" target="_blank" rel="noopener">https://www.weinbergmedicalphysics.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>Bethesda</td>
+          <td>Maryland</td>
+          <td>Mid-Atlantic</td>
+          <td>Medical Devices</td>
+          <td>Ultra-fast magnetic resonance imaging (MRI) technology that can be combined with low power electropermanent magnets to provide rapid high-resolution images, generate MRI gradients hundreds of times higher than conventional MRIs without discomfort, and can be used to propel nanoparticles to various parts of the body to deliver drugs and treat diseases.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$764,512</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 159 -->
+        <tr>
+          <td>159</td>
+          <td>Whiplash Technology, Inc. (DBA CareVirtue)</td>
+          <td><a href="https://carevirtue.com/" target="_blank" rel="noopener">https://carevirtue.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/carevirtue/" target="_blank" rel="noopener">https://www.linkedin.com/company/carevirtue/</a></td>
+          <td>NA</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Digital Health</td>
+          <td>Digital health platform with a focus on supporting informal family care teams by leveraging relationships with care experts and research institutions, to provide the proper resources and reduce the stress and burden of caring for loved ones with Alzheimer's disease.</td>
+          <td>STTR</td>
+          <td>$41,000</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 160 -->
+        <tr>
+          <td>160</td>
+          <td>XFIBRA, Inc.</td>
+          <td><a href="https://www.sbir.gov/node/1028093" target="_blank" rel="noopener">https://www.sbir.gov/node/1028093</a></td>
+          <td>NA</td>
+          <td>University of California, San Diego</td>
+          <td>San Diego</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Pharmaceuticals</td>
+          <td>Therapeutics focused on fibrotic diseases including liver cirrhosis and lung fibrosis.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 161 -->
+        <tr>
+          <td>161</td>
+          <td>Xyken, LLC</td>
+          <td><a href="https://www.xyken.com/" target="_blank" rel="noopener">https://www.xyken.com/</a></td>
+          <td><a href="https://www.linkedin.com/company/xyken-llc/" target="_blank" rel="noopener">https://www.linkedin.com/company/xyken-llc/</a></td>
+          <td>NA</td>
+          <td>McLean</td>
+          <td>Virginia</td>
+          <td>Southeast</td>
+          <td>Software</td>
+          <td>Mobile app platform leveraging 2D / 3D imaging and artificial intelligence (AI) for applications such as custom-fit ear buds and hearing aids, foot orthotics, wound healing tracking, GI tract disease screening, cancer detection, and virtual reality (VR) based rehabilitation.</td>
+          <td>NATIONAL INSTITUTE ON AGING</td>
+          <td>$950,463</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 162 -->
+        <tr>
+          <td>162</td>
+          <td>narnar, LLC</td>
+          <td><a href="https://www.narnar.co/" target="_blank" rel="noopener">https://www.narnar.co/</a></td>
+          <td><a href="https://www.linkedin.com/company/narnar/about/" target="_blank" rel="noopener">https://www.linkedin.com/company/narnar/about/</a></td>
+          <td>NA</td>
+          <td>Lake Oswego</td>
+          <td>Oregon</td>
+          <td>Pacific-Costal</td>
+          <td>Image Analysis</td>
+          <td>Software for contrast enhanced ultrasound (CEUS).</td>
+          <td>SBIR</td>
+          <td>$250k</td>
+          <td>Moeller Ventures LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>--</td>
+          <td>Leading Business Ventures, LLC</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+        <!-- Row 163 -->
+        <tr>
+          <td>163</td>
+          <td>phenoMapper, LLC</td>
+          <td><a href="http://phenomapper.com/" target="_blank" rel="noopener">http://phenomapper.com/</a></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>San Jose</td>
+          <td>California</td>
+          <td>Pacific-Costal</td>
+          <td>Software, Image Analysis</td>
+          <td>Optimization of minimally invasive, microwave ablation cancer treatment via the application of deep learning AI algorithms to analyze pre-treatment imaging data.</td>
+          <td>SBIR</td>
+          <td>NA</td>
+          <td>Moeller Ventures LLC</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>Lean RAQA, LLC</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <script>
+    $(document).ready(function () {
+      // Initialize DataTable
+      var table = $("#lbv-table").DataTable({
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100],
+        order: [[0, "asc"]],
+        dom: "lfrtip", // length, filter, table, pagination
+        language: {
+          search: "Search all columns:",
+          lengthMenu: "Show _MENU_ entries",
+          info: "Showing _START_ to _END_ of _TOTAL_ entries",
+          infoEmpty: "Showing 0 to 0 of 0 entries",
+          infoFiltered: "(filtered from _MAX_ total entries)",
+          paginate: {
+            first: "First",
+            last: "Last",
+            next: "Next",
+            previous: "Previous"
+          }
+        }
+      });
+
+      // Build per-column search boxes
+      $("#lbv-table thead tr.filter-row th").each(function (i) {
+        var title = $("#lbv-table thead tr.header-row th").eq(i).text();
+        $(this).html(
+          '<input type="text" placeholder="Filter ' +
+            title +
+            '" />'
+        );
+      });
+
+      // Apply per-column search
+      table.columns().every(function () {
+        var that = this;
+        $("input", this.header()).on("keyup change clear", function () {
+          if (that.search() !== this.value) {
+            that.search(this.value).draw();
+          }
+        });
+      });
+
+      // Hide/Show column toggles
+      $("#columnToggles span[data-column]").on("click", function () {
+        var colIndex = $(this).data("column");
+        var column = table.column(colIndex);
+        var currentlyVisible = column.visible();
+        column.visible(!currentlyVisible);
+
+        if (currentlyVisible) {
+          $(this).removeClass("visible-col").addClass("hidden-col");
+        } else {
+          $(this).removeClass("hidden-col").addClass("visible-col");
+        }
+      });
+
+      // Instructions toggle
+      $("#instructionsToggle").on("click", function () {
+        var instructions = $("#instructions");
+        var toggle = $(this);
+        
+        if (instructions.hasClass("show")) {
+          instructions.removeClass("show");
+          toggle.addClass("collapsed");
+          toggle.html("Show Instructions");
+          toggle.setAttribute("aria-expanded", "false");
+        } else {
+          instructions.addClass("show");
+          toggle.removeClass("collapsed");
+          toggle.html("Hide Instructions");
+          toggle.setAttribute("aria-expanded", "true");
+        }
+      });
+
+      // Reset filters button
+      $("#resetFiltersBtn").on("click", function () {
+        // Clear all column filters
+        table.columns().every(function () {
+          var column = this;
+          $("input", column.header()).val("");
+          column.search("");
+        });
+        
+        // Clear global search
+        table.search("").draw();
+        
+        // Show all columns
+        table.columns().visible(true);
+        $("#columnToggles span[data-column]").removeClass("hidden-col").addClass("visible-col");
+        
+        // Reset to first page
+        table.page("first").draw("page");
+      });
+
+      // Export to CSV function
+      function exportToCSV() {
+        try {
+          var csv = [];
+          var headers = [];
+          var columnMap = []; // Maps visible position to actual column index
+          
+          // Build column map and headers for visible columns only
+          table.columns().every(function () {
+            var columnIndex = this.index();
+            if (this.visible()) {
+              columnMap.push(columnIndex);
+              var headerText = $("#lbv-table thead tr.header-row th").eq(columnIndex).text();
+              headers.push(headerText);
+            }
+          });
+          
+          if (headers.length === 0) {
+            alert("No columns are visible. Please show at least one column.");
+            return;
+          }
+          
+          csv.push(headers.join(","));
+          
+          // Get all filtered rows
+          var rowDataArray = table.rows({ search: 'applied' }).data().toArray();
+          
+          // Process each row
+          rowDataArray.forEach(function(rowData) {
+            var csvRow = [];
+            
+            // Extract data for each visible column
+            columnMap.forEach(function(actualColIndex) {
+              var cellData = rowData[actualColIndex];
+              
+              // Remove HTML tags and clean up
+              var text = $("<div>").html(cellData || '').text().trim();
+              
+              // Handle empty values
+              if (!text || text === '--') {
+                text = '';
+              }
+              
+              // Escape quotes and wrap in quotes if contains comma, quote, or newline
+              if (text.includes(",") || text.includes('"') || text.includes("\n") || text.includes("\r")) {
+                text = '"' + text.replace(/"/g, '""') + '"';
+              }
+              
+              csvRow.push(text);
+            });
+            
+            csv.push(csvRow.join(","));
+          });
+          
+          // Create download
+          var csvContent = csv.join("\n");
+          var BOM = "\uFEFF"; // UTF-8 BOM for Excel compatibility
+          var blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+          var link = document.createElement("a");
+          
+          if (link.download !== undefined) {
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "lbv_portfolio_" + new Date().toISOString().split('T')[0] + ".csv");
+            link.style.visibility = "hidden";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up the object URL after a short delay
+            setTimeout(function() {
+              URL.revokeObjectURL(url);
+            }, 100);
+          } else {
+            // Fallback for older browsers
+            alert("Your browser doesn't support file downloads. Please use a modern browser.");
+          }
+        } catch (error) {
+          console.error("Export error:", error);
+          alert("Error exporting CSV: " + error.message + "\n\nPlease check the browser console (F12) for more details.");
+        }
+      }
+
+      // Export button
+      $("#exportBtn").on("click", function () {
+        exportToCSV();
+      });
+    });
+  </script>
+</body>
+</html>
+
