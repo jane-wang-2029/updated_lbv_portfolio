@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Leading Business Ventures (LBV) - Luis Miguel Barros's Portfolio</title>
+  <title>Leading Business Ventures (LBV) NIH Technical and Business Assistance (TABA) Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- DataTables + jQuery (CDN) -->
   <link
@@ -19,7 +19,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+      background-color: #ffffff;
       color: #2c3e50;
       line-height: 1.6;
     }
@@ -91,22 +91,26 @@
       right: 0;
       width: 40px;
       height: 100%;
-      background: linear-gradient(to left, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+      background: transparent;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s;
       z-index: 10;
+      display: none;
     }
     .table-wrapper.scrollable-right .table-scroll-indicator {
-      opacity: 1;
+      opacity: 0;
+      display: none;
     }
     .table-scroll-indicator-left {
       left: 0;
       right: auto;
-      background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+      background: transparent;
+      display: none;
     }
     .table-wrapper.scrollable-left .table-scroll-indicator-left {
-      opacity: 1;
+      opacity: 0;
+      display: none;
     }
     h2 {
       margin-top: 0;
@@ -121,6 +125,34 @@
       border-radius: 8px;
       margin-bottom: 1.5rem;
       border: 1px solid #e9ecef;
+    }
+    .lbv-filter-controls {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #e9ecef;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+    .lbv-filter-controls .label {
+      font-weight: 600;
+      color: #495057;
+      margin-right: 0.25rem;
+    }
+    .lbv-filter-controls label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      color: #495057;
+    }
+    .lbv-filter-controls input[type="radio"] {
+      accent-color: #1f3b5d;
+      cursor: pointer;
     }
     .instructions-toggle {
       background: #1f3b5d;
@@ -502,6 +534,63 @@
       color: #fff !important;
       border-color: #1f3b5d !important;
     }
+    #taba-description {
+      margin: 1.5rem 0;
+      padding: 1.25rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #1f3b5d;
+    }
+    #taba-description p {
+      margin: 0 0 1rem 0;
+      color: #495057;
+      line-height: 1.6;
+    }
+    #taba-description ul {
+      margin: 0;
+      padding-left: 1.5rem;
+      color: #495057;
+      line-height: 1.8;
+    }
+    #taba-description li {
+      margin: 0.5rem 0;
+    }
+    .lbv-logos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .lbv-logo-card {
+      text-align: center;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fafafa;
+      transition: all 0.2s;
+    }
+    .lbv-logo-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .lbv-logo-card img {
+      max-height: 60px;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 0.5rem auto;
+    }
+    .lbv-logo-card a {
+      text-decoration: none;
+      color: inherit;
+      font-weight: 600;
+      display: block;
+    }
+    .lbv-logo-card span {
+      display: block;
+      font-size: 0.85rem;
+      color: #555;
+    }
     @media (max-width: 768px) {
       main {
         padding: 1rem;
@@ -539,18 +628,67 @@
     }
   </style>
 </head>
-<body>
+<body id="top">
   <header>
-    <h1>Leading Business Ventures (LBV) - Luis Miguel Barros's Portfolio</h1>
+    <h1>Leading Business Ventures (LBV) NIH Technical and Business Assistance (TABA) Portfolio</h1>
     <nav>
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Website Terms and Conditions</a>
-      <a href="#">Intellectual Property Assessment Clients (Searchable, Sortable Table)</a>
+      <a href="#top">Home</a>
+      <a href="#taba-description">About</a>
+      <a href="#terms">Website Terms and Conditions</a>
+      <a href="#lbv-table">LBV's NIH TABA Assessment Clients (Searchable, Sortable Table)</a>
     </nav>
   </header>
   <main>
-    <h2>Intellectual Property Assessment Clients</h2>
+    <h2>NIH TABA Assessment</h2>
+    
+    <div id="taba-description">
+      <p>
+        TABA Funding is part of a comprehensive NIH program intended to help small businesses
+        identify and address their most pressing product development needs. TABA programs
+        assist small businesses in:
+      </p>
+      <ul>
+        <li>making better technical decisions concerning such projects.</li>
+        <li>solving technical problems which arise during the conduct of such projects.</li>
+        <li>minimizing technical risks associated with such projects; and</li>
+        <li>
+          developing and commercializing new commercial products and processes resulting from
+          such projects, including intellectual property protections.
+        </li>
+      </ul>
+    </div>
+
+    <figure id="nih-agencies-figure" style="text-align: center; margin: 1.5rem 0;">
+      <img src="assets/nih_agencies.png"
+           alt="Bar chart showing the number of LBV-assessed companies by NIH institute"
+           style="max-width: 100%; height: auto;">
+      <figcaption style="margin-top: 0.5rem; font-style: italic;">
+        Distribution of NIH Agencies for LBV-Assessed Companies.
+      </figcaption>
+    </figure>
+
+    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+      Note: LBV-related engagements are the primary focus. Use the search and column filters
+      to view specific agencies or partner roles. The logo gallery below highlights LBV
+      portfolio companies visually.
+    </p>
+
+    <div id="lbv-table-actions" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <a href="#lbv-logos"
+         id="lbv-logos-button"
+         style="
+           padding: 0.4rem 0.8rem;
+           border-radius: 4px;
+           border: 1px solid #444;
+           background-color: #f5f5f5;
+           text-decoration: none;
+           font-size: 0.9rem;
+           color: #1f3b5d;
+           font-weight: 500;
+         ">
+        View LBV Logo Gallery
+      </a>
+    </div>
     
     <div class="controls-section">
       <button class="instructions-toggle collapsed" id="instructionsToggle" aria-expanded="false" aria-controls="instructions">
@@ -568,6 +706,21 @@
         <p style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #e9ecef; font-size: 0.85rem; color: #6c757d; font-style: italic;">
           All information in this table is publicly available from company websites, LinkedIn profiles, or public SBIR filings.
         </p>
+      </div>
+      <div class="lbv-filter-controls" aria-label="Filter by LBV involvement">
+        <span class="label">Show companies:</span>
+        <label>
+          <input type="radio" name="lbvFilter" value="lbv" checked />
+          LBV only
+        </label>
+        <label>
+          <input type="radio" name="lbvFilter" value="all" />
+          All companies
+        </label>
+        <label>
+          <input type="radio" name="lbvFilter" value="nonlbv" />
+          Non-LBV only
+        </label>
       </div>
       
       <div class="action-buttons">
@@ -600,6 +753,7 @@
           <span class="visible-col" data-column="15">Management Team</span>
           <span class="visible-col" data-column="16">Reimbursement</span>
           <span class="visible-col" data-column="17">Regulatory</span>
+          <span class="visible-col" data-column="18">LBV Role</span>
         </div>
       </div>
     </div>
@@ -628,9 +782,11 @@
           <th>Consultant for Management Team &amp; Strategic Partnerships</th>
           <th>Consultant for Reimbursement</th>
           <th>Consultant for Regulatory</th>
+          <th>LBV Role</th>
         </tr>
         <!-- Per-column search inputs -->
         <tr class="filter-row">
+          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -4098,15 +4254,92 @@
         </tr>
       </tbody>
     </table>
+
+    <section id="lbv-logos" style="margin-top: 3rem;">
+      <h2>LBV Companies – Logo Gallery</h2>
+      <p>
+        This gallery highlights companies for which Leading Business Ventures (LBV) provided
+        technical and business assistance under NIH TABA and related programs.
+      </p>
+      <div id="lbv-logos-grid" class="lbv-logos-grid">
+        <!-- Logo cards will be populated dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <section id="terms" style="margin-top: 3rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+      <h2>Website Terms and Conditions</h2>
+      <p style="color: #495057; line-height: 1.6;">
+        This website displays publicly available information about companies that have received 
+        NIH TABA assessments. All data is sourced from company websites, LinkedIn profiles, 
+        or public SBIR filings. This information is provided for informational purposes only.
+      </p>
+    </section>
   </main>
+  <!-- Logo mapping - auto-generated by scripts/download_logos.py -->
+  <script src="js/logos_map.js"></script>
   <script>
     $(document).ready(function () {
+      // Ensure each body row has the same number of cells as the header (including LBV Role)
+      var headerColCount = $("#lbv-table thead tr.header-row th").length;
+      $("#lbv-table tbody tr").each(function () {
+        var $row = $(this);
+        var cellCount = $row.children("td").length;
+        if (cellCount < headerColCount) {
+          for (var i = cellCount; i < headerColCount; i++) {
+            $row.append("<td></td>");
+          }
+        }
+      });
+
       // Initialize DataTable
       var table = $("#lbv-table").DataTable({
         pageLength: 10,
         lengthMenu: [10, 25, 50, 100],
         order: [[0, "asc"]],
         dom: "lfrtip", // length, filter, table, pagination
+        columnDefs: [
+          {
+            // LBV Role column (last column)
+            targets: -1,
+            data: null,
+            defaultContent: "",
+            render: function (data, type, row) {
+              // Consultant columns for LBV involvement (match CSV logic):
+              // 13: Business Model, 14: Market Assessment,
+              // 15: Management Team, 16: Reimbursement
+              var hasLBV = false;
+              for (var i = 13; i <= 16; i++) {
+                var lbvCell = row[i] || "";
+                if (lbvCell.indexOf("Leading Business Ventures, LLC") !== -1) {
+                  hasLBV = true;
+                  break;
+                }
+              }
+
+              if (hasLBV) {
+                return "LBV";
+              }
+
+              // Non-LBV work: differentiate Moeller IP / Regulatory focus
+              var ipCell = row[12] || "";  // Consultant for IP and Competitive Assessment
+              var regCell = row[17] || ""; // Consultant for Regulatory
+              var hasMoellerIP =
+                ipCell.indexOf("Moeller Ventures LLC") !== -1;
+              var hasMoellerReg =
+                regCell.indexOf("Moeller Ventures LLC") !== -1;
+
+              if (hasMoellerIP && hasMoellerReg) {
+                return "Non-LBV – Moeller IP + Regulatory";
+              } else if (hasMoellerIP) {
+                return "Non-LBV – Moeller IP-only";
+              } else if (hasMoellerReg) {
+                return "Non-LBV – Regulatory only (Moeller)";
+              }
+
+              return "Non-LBV";
+            }
+          }
+        ],
         language: {
           search: "Search all columns:",
           lengthMenu: "Show _MENU_ entries",
@@ -4132,14 +4365,45 @@
         );
       });
 
-      // Apply per-column search
-      table.columns().every(function () {
-        var that = this;
-        $("input", this.header()).on("keyup change clear", function () {
-          if (that.search() !== this.value) {
-            that.search(this.value).draw();
+      // Apply per-column search: bind to inputs in the filter-row
+      $("#lbv-table thead tr.filter-row th").each(function (i) {
+        var column = table.column(i);
+        $("input", this).on("keyup change clear", function () {
+          if (column.search() !== this.value) {
+            column.search(this.value).draw();
           }
         });
+      });
+
+      // Determine LBV Role column index (last header cell)
+      var lbvRoleColIndex = $("#lbv-table thead tr.header-row th").length - 1;
+
+      // Default view: LBV only
+      table
+        .column(lbvRoleColIndex)
+        .search("^LBV", true, false, false)
+        .draw();
+
+      // LBV filter radio buttons
+      $("input[name='lbvFilter']").on("change", function () {
+        var mode = $(this).val();
+        if (mode === "lbv") {
+          table
+            .column(lbvRoleColIndex)
+            .search("^LBV", true, false, false)
+            .draw();
+        } else if (mode === "nonlbv") {
+          table
+            .column(lbvRoleColIndex)
+            .search("^Non-LBV", true, false, false)
+            .draw();
+        } else {
+          // all
+          table
+            .column(lbvRoleColIndex)
+            .search("", false, false, false)
+            .draw();
+        }
       });
 
       // Hide/Show column toggles
@@ -4165,12 +4429,12 @@
           instructions.removeClass("show");
           toggle.addClass("collapsed");
           toggle.html("Show Instructions");
-          toggle.setAttribute("aria-expanded", "false");
+          toggle.attr("aria-expanded", "false");
         } else {
           instructions.addClass("show");
           toggle.removeClass("collapsed");
           toggle.html("Hide Instructions");
-          toggle.setAttribute("aria-expanded", "true");
+          toggle.attr("aria-expanded", "true");
         }
       });
 
@@ -4192,6 +4456,13 @@
         
         // Reset to first page
         table.page("first").draw("page");
+
+        // Reset LBV toggle to "All companies" and clear LBV Role filter
+        $("input[name='lbvFilter'][value='all']").prop("checked", true);
+        table
+          .column(lbvRoleColIndex)
+          .search("", false, false, false)
+          .draw();
       });
 
       // Export to CSV function
@@ -4281,6 +4552,133 @@
       $("#exportBtn").on("click", function () {
         exportToCSV();
       });
+
+      // Populate LBV logo gallery
+      function populateLogoGallery() {
+        var $grid = $("#lbv-logos-grid");
+        $grid.empty(); // Clear existing hard-coded cards
+        
+        // Get all rows from the table (all data, not just visible)
+        // Note: DataTables .data() returns only the actual HTML cell data, not computed columns
+        // The LBV Role column (index 18) is computed, so we need to check consultant columns directly
+        var allData = table.rows({ search: 'none' }).data().toArray();
+        
+        // Helper function to check if a company is LBV (same logic as the render function)
+        function isLBVCompany(rowData) {
+          // Consultant columns for LBV involvement:
+          // 13: Business Model, 14: Market Assessment,
+          // 15: Management Team, 16: Reimbursement
+          for (var i = 13; i <= 16; i++) {
+            var cellData = rowData[i] || "";
+            // Extract text from HTML if needed
+            var cellText = typeof cellData === 'string' ? cellData : $('<div>').html(cellData).text();
+            if (cellText.indexOf("Leading Business Ventures, LLC") !== -1) {
+              return true;
+            }
+          }
+          return false;
+        }
+        
+        // Helper function to generate logo filename from company name
+        // Uses LOGO_MAP from js/logos_map.js (generated by scripts/download_logos.py)
+        function getLogoFilename(companyName) {
+          if (!companyName || typeof LOGO_MAP === "undefined") {
+            return null;
+          }
+          return LOGO_MAP[companyName] || null;
+        }
+        
+        // Helper function to extract URL from cell (handles <a> tags)
+        function extractUrl(cellData) {
+          if (!cellData) return '#';
+          var $temp = $('<div>').html(cellData);
+          var $link = $temp.find('a');
+          if ($link.length > 0) {
+            return $link.attr('href') || '#';
+          }
+          // If it's plain text and looks like a URL, use it
+          var text = $temp.text().trim();
+          if (text.startsWith('http://') || text.startsWith('https://')) {
+            return text;
+          }
+          return '#';
+        }
+        
+        // Extract company name from cell (handles HTML)
+        function extractCompanyName(cellData) {
+          if (!cellData) return '';
+          var $temp = $('<div>').html(cellData);
+          return $temp.text().trim();
+        }
+        
+        // Process each row
+        var lbvCount = 0;
+        allData.forEach(function(rowData) {
+          // Check if this is an LBV company by examining consultant columns directly
+          if (!isLBVCompany(rowData)) {
+            return; // Skip non-LBV companies
+          }
+          
+          // Extract company data
+          // Column indices: 0=Index, 1=Company Name, 2=Company Website
+          var companyName = extractCompanyName(rowData[1]);
+          var companyWebsite = extractUrl(rowData[2]);
+          
+          if (!companyName) {
+            return; // Skip rows without company names
+          }
+          
+          lbvCount++;
+          
+          // Generate logo filename using LOGO_MAP
+          var logoFilename = getLogoFilename(companyName);
+          var logoPath = logoFilename ? 'logos/' + logoFilename : null;
+          
+          // Create logo card
+          var $card = $('<div>').addClass('lbv-logo-card');
+          var $link = $('<a>')
+            .attr('href', companyWebsite)
+            .attr('target', '_blank')
+            .attr('rel', 'noopener noreferrer');
+          
+          // Only create img tag if logo exists in LOGO_MAP
+          if (logoPath) {
+            var $img = $('<img>')
+              .attr('src', logoPath)
+              .attr('alt', companyName + ' logo');
+            $link.append($img);
+          }
+          
+          // Always show company name
+          var $span = $('<span>').text(companyName);
+          $link.append($span);
+          
+          $card.append($link);
+          $grid.append($card);
+        });
+        
+        // If no LBV companies found, show a message
+        if (lbvCount === 0) {
+          $grid.html('<p style="grid-column: 1 / -1; text-align: center; color: #6c757d; padding: 2rem;">No LBV companies found in the table.</p>');
+        }
+      }
+      
+      // Populate logo gallery after table is initialized
+      populateLogoGallery();
+
+      // Scroll indicators for horizontal overflow
+      var $wrapper = $("#tableWrapper");
+      function updateScrollIndicators() {
+        var el = $wrapper.get(0);
+        if (!el) return;
+        var canScrollLeft = el.scrollLeft > 0;
+        var canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth;
+        $wrapper.toggleClass("scrollable-left", canScrollLeft);
+        $wrapper.toggleClass("scrollable-right", canScrollRight);
+      }
+      updateScrollIndicators();
+      $wrapper.on("scroll", updateScrollIndicators);
+      $(window).on("resize", updateScrollIndicators);
     });
   </script>
 </body>
